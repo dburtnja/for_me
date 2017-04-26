@@ -16,6 +16,7 @@ def internet_on():
 
 
 def select_place(user, coach, coaches):
+    print(coach)
     key = ""
     for value in coach['value']['places']:
         key = value
@@ -43,6 +44,7 @@ def select_place(user, coach, coaches):
     }
     r = requests.post('http://booking.uz.gov.ua/cart/add/', data=coach)
     print(r.status_code)
+    print(r.text)
     print(requests.utils.dict_from_cookiejar(r.cookies))
 
 def find_coach(user, coaches):
