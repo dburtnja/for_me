@@ -2,11 +2,33 @@ import requests, json
 from tkinter import *
 from datetime import datetime
 
+#import winsound
+#winsound.PlaySound("SystemExit", winsound.SND_ALIAS)
+
+def compare_place_type(all_trains_val, search_place, user):
+    if search_place:
+        for element in all_trains_val:
+            for types in element['types']:
+                if types['id'] == search_place:
+                    print(types)
+                    user.my_train = element
+                    return True
+    else:
+        print(all_trains_val)
+    return True
+
+
 def find_place(user, all_trains):
     print("Шукаю... Осання перевірка - " + datetime.now().strftime("%H:%M:%S"))
     if isinstance(all_trains['value'], str):
         print(all_trains['value'])
-    print(all_trains['value'])
+        return True
+    else:
+        if compare_place_type(all_trains['value'], user.place_type, user):
+            return False
+        else:
+            return True
+
 
 def get_all_places(user):
     print("=============Шукаю вльні місця============")
@@ -23,7 +45,7 @@ def get_all_places(user):
     }
     r = requests.post('http://booking.uz.gov.ua/purchase/search/', data=data)
     print(r.status_code)
-    find_place(user, json.loads(r.text))
+    return find_place(user, json.loads(r.text))
 
 def get_station_id(name):
     r = requests.get('http://booking.uz.gov.ua/purchase/station/', params={'term': name})
@@ -40,10 +62,16 @@ def try_find_ticket(my_fild):
     else:
         user = Pasenger(my_fild.station_from.get(), my_fild.station_till.get(), my_fild.dep_date.get(),
                         my_fild.place_type.get())
-        get_all_places(user)
+        if get_all_places(user):
+            root.after(int(60000 * float(my_fild.r_time.get())), try_find_ticket, my_fild)
 
 class EntryFild:
     def __init__(self):
+        self.label = Label(root, text="New Label", font="Arial 48", bg="green")
+        self.label.place(relx=0.5, rely=0.5, anchor="center")
+        self.r_time = Entry(root, width="5")
+        self.r_time.insert(END, 2)
+        self.r_time.pack()
         self.station_from = Entry(root, width="40")
         self.station_from.pack()
         self.station_till = Entry(root, width="40")
@@ -80,6 +108,7 @@ class Pasenger :
         self.place_type = place_type
         self.f_name = ""
         self.l_name = ""
+        self.my_train = {}
 
 s = requests.Session()
 
