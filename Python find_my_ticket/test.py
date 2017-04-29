@@ -1,4 +1,4 @@
-import requests, json, urllib
+import requests, json
 from tkinter import *
 from datetime import datetime
 from pygame import mixer
@@ -82,7 +82,7 @@ def compare_place_type(all_trains_val, search_place, user):
     if search_place:
         for element in all_trains_val:
             for types in element['types']:
-                if types['id'] == search_place:
+                if types['id'] == search_place and element['num'] == '063О':
                     print(types)
                     user.my_train = element
                     return True
@@ -160,8 +160,8 @@ class EntryFild:
         self.station_till = Entry(root, width="40")
         self.station_till.insert(END, "Київ")
         self.station_till.pack()
-        self.dep_date = Entry(root, width="10")
-        self.dep_date.insert(END, datetime.now().strftime("%d.%m.%Y"))
+        self.dep_date = Entry(root, width="15")
+        self.dep_date.insert(END, datetime.now().strftime("%d.%m.%Y %H:%M"))
         self.dep_date.pack()
         self.place_type = Entry(root, width="5")
         self.place_type.insert(END, "П")
@@ -192,7 +192,7 @@ class Pasenger :
         self.st_from = st_from
         self.st_till_id = get_station_id(st_till)
         self.st_till = st_till
-        self.dep_date = datetime.strptime(dep_date, '%d.%m.%Y')
+        self.dep_date = datetime.strptime(dep_date, '%d.%m.%Y %H:%M')
         self.place_type = place_type
         self.f_name = ""
         self.l_name = ""
