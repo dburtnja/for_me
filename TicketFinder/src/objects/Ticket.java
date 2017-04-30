@@ -17,8 +17,8 @@ public class Ticket {
     public String firstName;
     public String lastName;
     private SimpleDateFormat writeFormat = new SimpleDateFormat("dd.MM.yyyyHH:mm");
-    private SimpleDateFormat readData = new SimpleDateFormat("dd.MM.yyyy");
-    private SimpleDateFormat readTime = new SimpleDateFormat("HH:mm");
+    public SimpleDateFormat readData = new SimpleDateFormat("dd.MM.yyyy");
+    public SimpleDateFormat readTime = new SimpleDateFormat("HH:mm");
 
     public Station getFrom() {
         return from;
