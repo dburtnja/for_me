@@ -171,7 +171,7 @@ class EntryFild:
         self.last_name = Entry(root, width="40")
         self.last_name.pack()
     def simple_not_empty(self):
-        if self.station_from.get() and self.station_till.get() and self.dep_date.get() and self.place_type.get():
+        if self.station_from.get() and self.station_till.get() and self.dep_date.get():
             return True
         else:
             return False
