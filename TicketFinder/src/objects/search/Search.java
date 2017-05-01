@@ -69,10 +69,19 @@ public class Search {
         Post post = new Post();
         Object search = post.sendPost("http://booking.uz.gov.ua/purchase/search/", param, Search.class);
         try {
-
             ticket.search = (Search)search;
-            System.out.println(ticket.search.value.get(0).getNum());
-            return true;
+            long trainData;
+            int myData;
+            for (int i = 0; i < ticket.search.value.size(); i++) {
+                trainData = ticket.search.value.get(i).getFrom().getDate().longValue();
+                myData = (int)(ticket.tillDate.getTime() / 1000);
+                if (myData >= trainData){
+                    for (int j = 0; j < ticket.search.value.get(i).getTypes().size(); j++) {
+                        System.out.println(ticket.search.value.get(i).getTypes().get(j).getId());
+                    }
+                }
+            }
+            return false;
         } catch (Exception e) {
             ExeptionObj exeptionObj = (ExeptionObj) search;
             if (exeptionObj.value.compareTo("Введена невірна дата") == 0) { //змінити на "по заданому напрямку місць не має.."

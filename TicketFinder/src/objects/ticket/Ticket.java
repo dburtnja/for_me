@@ -13,6 +13,7 @@ import java.util.Date;
 public class Ticket {
     private Station from;
     private Station till;
+    public Place place;
     public Date depDate;
     public Date tillDate;
     public String firstName;
