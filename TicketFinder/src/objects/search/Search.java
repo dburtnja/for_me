@@ -57,7 +57,7 @@ public class Search {
         this.captcha = captcha;
     }
 
-    public boolean sendPost(Ticket ticket, JLabel status) {
+    public boolean sendPost(Ticket ticket, JLabel status, JLabel serverResponse) {
         status.setText("Веду пошук");
         String param = "station_id_from=" + ticket.getFrom().value +
                 "&station_id_till=" + ticket.getTill().value +
@@ -77,7 +77,8 @@ public class Search {
                 myData = (int)(ticket.tillDate.getTime() / 1000);
                 if (myData >= trainData){
                     for (int j = 0; j < ticket.search.value.get(i).getTypes().size(); j++) {
-                        System.out.println(ticket.search.value.get(i).getTypes().get(j).getId());
+                        if (ticket.place.isSuitable(ticket.search.value.get(i).getTypes().get(j).getId()))
+                            return true;
                     }
                 }
             }
@@ -86,8 +87,10 @@ public class Search {
             ExeptionObj exeptionObj = (ExeptionObj) search;
             if (exeptionObj.value.compareTo("Введена невірна дата") == 0) { //змінити на "по заданому напрямку місць не має.."
                 status.setText(exeptionObj.value);
+                serverResponse.setText(exeptionObj.value);
                 return true;
             } else {
+                serverResponse.setText(exeptionObj.value);
                 return false;
             }
         }

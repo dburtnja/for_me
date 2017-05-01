@@ -2,15 +2,16 @@ package objects.ticket;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
+import java.util.Objects;
 
 /**
  * Created by Denys on 01.05.2017.
  */
 public class Place {
-    public boolean kPlace = false;
-    public boolean pPlace = false;
-    public boolean c1Place = false;
-    public boolean c2Place = false;
+    private boolean kPlace = false;
+    private boolean pPlace = false;
+    private boolean c1Place = false;
+    private boolean c2Place = false;
 
     public Place(JRadioButton eny, JRadioButton kPlace, JRadioButton pPlace, JRadioButton c1Place, JRadioButton c2Place) {
         if (eny.isSelected()) {
@@ -29,5 +30,15 @@ public class Place {
                 this.c2Place = true;
         }
     }
-
+    public boolean isSuitable(String id) {
+        if (this.pPlace && id.matches("П"))
+            return true;
+        else if (this.kPlace && id.matches("К"))
+            return true;
+        else if (this.c1Place && id.matches("С1"))
+            return true;
+        else if (this.c2Place && id.matches("С2"))
+            return true;
+        return false;
+    }
 }
