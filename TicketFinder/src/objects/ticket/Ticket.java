@@ -1,6 +1,7 @@
-package objects;
+package objects.ticket;
 
 import objects.Station;
+import objects.search.Search;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -16,9 +17,15 @@ public class Ticket {
     public Date tillDate;
     public String firstName;
     public String lastName;
+    public Search search;
     private SimpleDateFormat writeFormat = new SimpleDateFormat("dd.MM.yyyyHH:mm");
     public SimpleDateFormat readData = new SimpleDateFormat("dd.MM.yyyy");
     public SimpleDateFormat readTime = new SimpleDateFormat("HH:mm");
+
+    public Ticket(String from, String till,  JLabel serverResponse) {
+        this.from = new Station(from, serverResponse);
+        this.till = new Station(till, serverResponse);
+    }
 
     public Station getFrom() {
         return from;
@@ -52,10 +59,5 @@ public class Ticket {
             date.setText(readData.format(new Date()));
             time.setText(readTime.format(new Date()));
         }
-    }
-
-    public Ticket(String from, String till) {
-        this.from = new Station(from);
-        this.till = new Station(till);
     }
 }

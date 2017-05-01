@@ -9,11 +9,13 @@ import java.net.URLEncoder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import javax.swing.*;
+
 public class Station {
     public String label;
     public int value;
 
-    public Station(String label) {
+    public Station(String label, JLabel serverResponse) {
         Gson gson = new Gson();
 
         String url = "http://booking.uz.gov.ua/purchase/station/?term=" + URLEncoder.encode(label);
@@ -26,6 +28,8 @@ public class Station {
             int responseCode = con.getResponseCode();
             System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
+
+            serverResponse.setText("Код відповіді: " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
