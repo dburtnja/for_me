@@ -1,6 +1,7 @@
 package objects.ticket;
 
 import objects.Station;
+import objects.coach.Coach;
 import objects.coaches.Coaches;
 import objects.coaches.TestClass;
 import objects.search.Search;
@@ -22,6 +23,7 @@ public class Ticket {
     public String lastName;
     public Search search;
     public TestClass coaches;
+    public Coach coach;
     private SimpleDateFormat writeFormat = new SimpleDateFormat("dd.MM.yyyyHH:mm");
     public SimpleDateFormat readData = new SimpleDateFormat("dd.MM.yyyy");
     public SimpleDateFormat readTime = new SimpleDateFormat("HH:mm");
@@ -30,6 +32,7 @@ public class Ticket {
     public int coach_type_id;
     public int coach_num;
     public String coach_class;
+    public String palce_nbr = null;
 
     public Ticket(String from, String till,  JLabel serverResponse) {
         this.from = new Station(from, serverResponse);

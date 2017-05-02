@@ -85,6 +85,7 @@ public class Search {
                             if (ticket.firstName != null) {
                                 ticket.train_nbr = ticket.search.value.get(i).getNum();
                                 new SendCoaches(ticket, post);
+                                findPlace.setText("Знайдено: " + ticket.coach_type + " " + ticket.palce_nbr);
                             }
                             return true;
                         }

@@ -30,6 +30,7 @@ public class Post {
             System.out.println("\nSending 'POST' request to URL : " + url);
             System.out.println("Post parameters : " + urlParameters);
             System.out.println("Response Code : " + responseCode);
+            System.out.println(con.getHeaderField(4));
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
