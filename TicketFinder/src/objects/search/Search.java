@@ -9,6 +9,7 @@ import objects.ticket.Ticket;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Search {
 
     @SerializedName("value")
     @Expose
-    public List<Value> value = null;
+    private List<Value> value = null;
     @SerializedName("error")
     @Expose
     private Object error;
@@ -61,15 +62,20 @@ public class Search {
 
     public boolean sendPost(Ticket ticket, JLabel status, JLabel serverResponse, JLabel findPlace) {
         status.setText("Веду пошук");
-        String param = "station_id_from=" + ticket.getFrom().value +
-                "&station_id_till=" + ticket.getTill().value +
-                "&station_from=" +
-                "&station_till=" +
-                "&date_dep=" + ticket.readData.format(ticket.depDate) +
-                "&time_dep=" + URLEncoder.encode(ticket.readTime.format(ticket.depDate)) +
-                "&time_dep_till=&another_ec=0&search=";
+        String param = null;
+        try {
+            param = "station_id_from=" + ticket.getFrom().value +
+                    "&station_id_till=" + ticket.getTill().value +
+                    "&station_from=" +
+                    "&station_till=" +
+                    "&date_dep=" + ticket.readData.format(ticket.depDate) +
+                    "&time_dep=" + URLEncoder.encode(ticket.readTime.format(ticket.depDate), "UTF-8") +
+                    "&time_dep_till=&another_ec=0&search=";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Post post = new Post();
-        Object search = post.sendPost("http://booking.uz.gov.ua/purchase/search/", param, Search.class);
+        Object search = post.sendPost("http://booking.uz.gov.ua/purchase/search/", param, Search.class, ticket);
         try {
             ticket.search = (Search)search;
             long trainData;

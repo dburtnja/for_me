@@ -10,9 +10,6 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Denys on 30.04.2017.
- */
 public class Ticket {
     private Station from;
     private Station till;
@@ -33,6 +30,9 @@ public class Ticket {
     public int coach_num;
     public String coach_class;
     public String palce_nbr = null;
+    public JTextField cookieStore;
+    public JLabel instruction1;
+    public JLabel instruction2;
 
     public Ticket(String from, String till,  JLabel serverResponse) {
         this.from = new Station(from, serverResponse);
