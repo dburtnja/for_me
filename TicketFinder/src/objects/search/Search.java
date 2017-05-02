@@ -2,11 +2,13 @@ package objects.search;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import objects.ExeptionObj.ExeptionObj;
+import objects.ExeptionObj.ExceptionObj;
 import objects.Post;
+import objects.coaches.SendCoaches;
 import objects.ticket.Ticket;
 
 import javax.swing.*;
+import java.awt.*;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class Search {
         this.captcha = captcha;
     }
 
-    public boolean sendPost(Ticket ticket, JLabel status, JLabel serverResponse) {
+    public boolean sendPost(Ticket ticket, JLabel status, JLabel serverResponse, JLabel findPlace) {
         status.setText("Веду пошук");
         String param = "station_id_from=" + ticket.getFrom().value +
                 "&station_id_till=" + ticket.getTill().value +
@@ -77,20 +79,28 @@ public class Search {
                 myData = (int)(ticket.tillDate.getTime() / 1000);
                 if (myData >= trainData){
                     for (int j = 0; j < ticket.search.value.get(i).getTypes().size(); j++) {
-                        if (ticket.place.isSuitable(ticket.search.value.get(i).getTypes().get(j).getId()))
+                        if (ticket.place.isSuitable(ticket.search.value.get(i).getTypes().get(j).getId(), ticket)) {
+                            findPlace.setText("Знайдено: " + ticket.coach_type);
+                            findPlace.setForeground(Color.red);
+                            if (ticket.firstName != null) {
+                                ticket.train_nbr = ticket.search.value.get(i).getNum();
+                                new SendCoaches(ticket, post);
+                            }
                             return true;
+                        }
                     }
                 }
             }
             return false;
         } catch (Exception e) {
-            ExeptionObj exeptionObj = (ExeptionObj) search;
-            if (exeptionObj.value.compareTo("Введена невірна дата") == 0) { //змінити на "по заданому напрямку місць не має.."
-                status.setText(exeptionObj.value);
-                serverResponse.setText(exeptionObj.value);
+            ExceptionObj exceptionObj = (ExceptionObj) search;
+            if (exceptionObj.value.compareTo("Введена невірна дата") == 0) { //змінити на "по заданому напрямку місць не має.."
+                status.setForeground(Color.red);
+                status.setText(exceptionObj.value);
+                serverResponse.setText(exceptionObj.value);
                 return true;
             } else {
-                serverResponse.setText(exeptionObj.value);
+                serverResponse.setText(exceptionObj.value);
                 return false;
             }
         }

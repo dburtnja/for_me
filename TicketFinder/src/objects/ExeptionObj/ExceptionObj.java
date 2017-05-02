@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Denys on 01.05.2017.
  */
-public class ExeptionObj {
+public class ExceptionObj {
     @SerializedName("value")
     @Expose
     public String value;

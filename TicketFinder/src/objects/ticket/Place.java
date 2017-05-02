@@ -30,15 +30,20 @@ public class Place {
                 this.c2Place = true;
         }
     }
-    public boolean isSuitable(String id) {
-        if (this.pPlace && id.matches("П"))
+    public boolean isSuitable(String id, Ticket ticket) {
+        if (this.pPlace && id.matches("П")) {
+            ticket.coach_type = "П";
             return true;
-        else if (this.kPlace && id.matches("К"))
+        } else if (this.kPlace && id.matches("К")) {
+            ticket.coach_type = "К";
             return true;
-        else if (this.c1Place && id.matches("С1"))
+        } else if (this.c1Place && id.matches("С1")) {
+            ticket.coach_type = "С1";
             return true;
-        else if (this.c2Place && id.matches("С2"))
+        } else if (this.c2Place && id.matches("С2")) {
+            ticket.coach_type = "С2";
             return true;
+        }
         return false;
     }
 }

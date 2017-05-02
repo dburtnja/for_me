@@ -1,7 +1,7 @@
 package objects;
 
 import com.google.gson.Gson;
-import objects.ExeptionObj.ExeptionObj;
+import objects.ExeptionObj.ExceptionObj;
 
 import java.lang.reflect.Type;
 import java.io.BufferedReader;
@@ -39,7 +39,7 @@ public class Post {
             try {
                 return gson.fromJson(str, type);
             } catch (Exception e) {
-                return gson.fromJson(str, ExeptionObj.class);
+                return gson.fromJson(str, ExceptionObj.class);
             }
         } catch (Exception e) {
             System.out.println("Помилка методу POST за посиланням: " + url);

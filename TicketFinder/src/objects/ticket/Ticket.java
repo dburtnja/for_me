@@ -1,6 +1,8 @@
 package objects.ticket;
 
 import objects.Station;
+import objects.coaches.Coaches;
+import objects.coaches.TestClass;
 import objects.search.Search;
 
 import javax.swing.*;
@@ -19,9 +21,15 @@ public class Ticket {
     public String firstName;
     public String lastName;
     public Search search;
+    public TestClass coaches;
     private SimpleDateFormat writeFormat = new SimpleDateFormat("dd.MM.yyyyHH:mm");
     public SimpleDateFormat readData = new SimpleDateFormat("dd.MM.yyyy");
     public SimpleDateFormat readTime = new SimpleDateFormat("HH:mm");
+    public String train_nbr;
+    public String coach_type;
+    public int coach_type_id;
+    public int coach_num;
+    public String coach_class;
 
     public Ticket(String from, String till,  JLabel serverResponse) {
         this.from = new Station(from, serverResponse);
@@ -34,6 +42,20 @@ public class Ticket {
 
     public Station getTill() {
         return till;
+    }
+
+    public boolean setName(JTextField firstName, JTextField lastName, JLabel status) {
+        if (firstName.getText().isEmpty()) {
+            status.setText("Не вказане ім'я");
+            return false;
+        }
+        if (lastName.getText().isEmpty()) {
+            status.setText("Не вказане прізвище");
+            return false;
+        }
+        this.firstName = firstName.getText();
+        this.lastName = lastName.getText();
+        return true;
     }
 
     public void setDepDate(JLabel status, JTextField date, JTextField time) {
