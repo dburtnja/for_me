@@ -37,7 +37,7 @@ public class Station {
             this.value = stationsArray[0].value;
             this.label = stationsArray[0].label;
         } catch (Exception e) {
-            System.out.println("Невірна назва санції");
+            serverResponse.setText("Невірна назва санції");
         }
     }
 }

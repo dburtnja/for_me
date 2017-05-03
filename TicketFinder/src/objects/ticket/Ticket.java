@@ -30,7 +30,7 @@ public class Ticket {
     public int coach_num;
     public String coach_class;
     public String palce_nbr = null;
-    public JTextField cookieStore;
+    public JLabel cookieStore;
     public JLabel instruction1;
     public JLabel instruction2;
 

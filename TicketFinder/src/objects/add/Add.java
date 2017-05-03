@@ -1,10 +1,11 @@
 package objects.add;
 
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
 import objects.Post;
 import objects.ticket.Ticket;
 
 import java.awt.*;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -37,7 +38,9 @@ public class Add {
             System.out.println(param);
             if (true) { //перевірити чи не було помилки
                 ticket.cookieStore.setVisible(true);
-                ticket.cookieStore.selectAll();
+                StringSelection stringSelection = new StringSelection(ticket.cookieStore.getText());
+                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clpbrd.setContents(stringSelection, null);
                 ticket.instruction1.setVisible(true);
                 ticket.instruction2.setVisible(true);
                 Desktop.getDesktop().browse(new URI("http://booking.uz.gov.ua/"));
