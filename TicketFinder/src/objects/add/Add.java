@@ -45,7 +45,6 @@ public class Add {
                 clpbrd.setContents(stringSelection, null);
                 ticket.instruction1.setVisible(true);
                 ticket.instruction2.setVisible(true);
-                Desktop.getDesktop().browse(new URI("http://booking.uz.gov.ua/"));
             } else {
                 ticket.instruction1.setText("Помилка");
                 ticket.instruction2.setText(testStr);
