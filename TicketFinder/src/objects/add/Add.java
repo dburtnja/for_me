@@ -2,6 +2,7 @@ package objects.add;
 
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
+
 import objects.Post;
 import objects.ticket.Ticket;
 
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 public class Add {
 
     public Add(Ticket ticket, Post post) {
+        String testStr = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             String param = "from=" + ticket.getFrom().value +
@@ -34,9 +36,9 @@ public class Add {
                     "&places[0][reserve]=0" +
                     "&places[0][place_num]=" + ticket.palce_nbr;
             System.out.println(param);
-            param = (String) post.sendPost("http://booking.uz.gov.ua/cart/add/", param, null, ticket);
+            testStr = (String) post.sendPost("http://booking.uz.gov.ua/cart/add/", param, null, ticket);
             System.out.println(param);
-            if (true) { //перевірити чи не було помилки
+            if (testStr.contains("\"error\":false,\"data\":null,\"captcha\":null")) { //перевірити чи не було помилки
                 ticket.cookieStore.setVisible(true);
                 StringSelection stringSelection = new StringSelection(ticket.cookieStore.getText());
                 Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -44,9 +46,15 @@ public class Add {
                 ticket.instruction1.setVisible(true);
                 ticket.instruction2.setVisible(true);
                 Desktop.getDesktop().browse(new URI("http://booking.uz.gov.ua/"));
+            } else {
+                ticket.instruction1.setText("Помилка");
+                ticket.instruction2.setText(testStr);
             }
         } catch (Exception e) {
             System.out.println("Add send error");
+            ticket.instruction1.setText("Помилка");
+            if (testStr != null)
+                ticket.instruction2.setText(testStr);
         }
     }
 }
