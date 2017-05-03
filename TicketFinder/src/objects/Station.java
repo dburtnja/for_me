@@ -8,6 +8,8 @@ import java.net.URLEncoder;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sun.deploy.util.SystemUtils;
+import sun.plugin2.util.SystemUtil;
 
 import javax.swing.*;
 
@@ -18,8 +20,8 @@ public class Station {
     public Station(String label, JLabel serverResponse) {
         Gson gson = new Gson();
 
-        String url = "http://booking.uz.gov.ua/purchase/station/?term=" + URLEncoder.encode(label);
         try {
+            String url = "http://booking.uz.gov.ua/purchase/station/?term=" + URLEncoder.encode(label, "UTF-8");
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -37,7 +39,7 @@ public class Station {
             this.value = stationsArray[0].value;
             this.label = stationsArray[0].label;
         } catch (Exception e) {
-            serverResponse.setText("Невірна назва санції");
+            serverResponse.setText("Помилка пошуку станції");
         }
     }
 }

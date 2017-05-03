@@ -1,10 +1,12 @@
 package objects.ticket;
 
+import com.sun.deploy.util.SystemUtils;
 import objects.Station;
 import objects.coach.Coach;
 import objects.coaches.Coaches;
 import objects.coaches.TestClass;
 import objects.search.Search;
+
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -31,12 +33,15 @@ public class Ticket {
     public String coach_class;
     public String palce_nbr = null;
     public JLabel cookieStore;
+    public String osName;
     public JLabel instruction1;
     public JLabel instruction2;
 
     public Ticket(String from, String till,  JLabel serverResponse) {
         this.from = new Station(from, serverResponse);
         this.till = new Station(till, serverResponse);
+        osName = System.getProperty("os.name").toLowerCase();
+        serverResponse.setText(osName);
     }
 
     public Station getFrom() {
