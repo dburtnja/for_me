@@ -1,8 +1,13 @@
 package objects.ticket;
 
+
 import javax.swing.*;
 import java.awt.event.ItemEvent;
+import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Objects;
+
 
 /**
  * Created by Denys on 01.05.2017.
@@ -30,6 +35,9 @@ public class Place {
                 this.c2Place = true;
         }
     }
+
+
+
     public boolean isSuitable(String id, Ticket ticket) {
         if (this.pPlace && id.matches("П")) {
             ticket.coach_type = "П";

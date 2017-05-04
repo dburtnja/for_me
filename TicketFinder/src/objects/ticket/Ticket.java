@@ -37,6 +37,9 @@ public class Ticket {
     public JLabel instruction1;
     public JLabel instruction2;
 
+    public JTextField test1;
+    public JTextField test2;
+
     public Ticket(String from, String till,  JLabel serverResponse) {
         this.from = new Station(from, serverResponse);
         this.till = new Station(till, serverResponse);

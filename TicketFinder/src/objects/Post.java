@@ -36,7 +36,7 @@ public class Post {
             ticket.cookieStore.setText("document.cookie = \"" + cookie + "\";");
 
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+                    new InputStreamReader(con.getInputStream(), "UTF-8"));
             String str = in.readLine();
             if (type != null) {
                 Gson gson = new Gson();

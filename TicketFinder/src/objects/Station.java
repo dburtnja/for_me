@@ -34,7 +34,7 @@ public class Station {
             serverResponse.setText("Код відповіді: " + responseCode);
 
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+                    new InputStreamReader(con.getInputStream(), "UTF-8"));
             Station[] stationsArray = gson.fromJson(in.readLine(), new TypeToken<Station[]>() {}.getType());
             this.value = stationsArray[0].value;
             this.label = stationsArray[0].label;
