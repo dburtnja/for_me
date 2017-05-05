@@ -34,8 +34,8 @@ public class SendCoaches {
             ticket.palce_nbr = places.get(0);
     }
 
-    public SendCoaches(Ticket ticket, Post post) {
-        String coachesParam = null;
+    public boolean SendCoachesFunc(Ticket ticket, Post post) {
+        String coachesParam;
         try {
             coachesParam = "station_id_from=" + ticket.getFrom().value +
                     "&station_id_till=" + ticket.getTill().value +
@@ -47,10 +47,11 @@ public class SendCoaches {
                     "&another_ec=0";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return false;
         }
         ticket.coaches = (TestClass) post.sendPost("http://booking.uz.gov.ua/purchase/coaches/", coachesParam, TestClass.class, ticket);
         selectCoach(ticket);
-        String coachParam = null;
+        String coachParam;
         try {
             coachParam = "station_id_from=" + ticket.getFrom().value +
                     "&station_id_till=" + ticket.getTill().value +
@@ -62,15 +63,19 @@ public class SendCoaches {
                     "&scheme_id=0";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return false;
         }
         System.out.println("coachParam = " + coachParam);
         Object newCoach =  post.sendPost("http://booking.uz.gov.ua/purchase/coach/", coachParam, Coach.class, ticket);
         try {
             ticket.coach = (Coach) newCoach;
             findPlace(ticket);
-            new Add(ticket, post);
+            if (ticket.firstName != null)
+                new Add(ticket, post);
+            return true;
         } catch (Exception e) {
             System.out.println("Помилка SendCoaches:46");
+            return false;
         }
     }
 }

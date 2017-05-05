@@ -86,14 +86,12 @@ public class Search {
                 if (myData >= trainData){
                     for (int j = 0; j < ticket.search.value.get(i).getTypes().size(); j++) {
                         if (ticket.place.isSuitable(ticket.search.value.get(i).getTypes().get(j).getId(), ticket)) {
-                            findPlace.setText("Знайдено: " + ticket.coach_type);
-                            findPlace.setForeground(Color.red);
-                            if (ticket.firstName != null) {
-                                ticket.train_nbr = ticket.search.value.get(i).getNum();
-                                new SendCoaches(ticket, post);
+                            ticket.train_nbr = ticket.search.value.get(i).getNum();
+                            SendCoaches sendCoaches = new SendCoaches();
+                            if (sendCoaches.SendCoachesFunc(ticket, post)) {
                                 findPlace.setText("Знайдено: " + ticket.coach_type + " " + ticket.palce_nbr);
+                                return true;
                             }
-                            return true;
                         }
                     }
                 }
