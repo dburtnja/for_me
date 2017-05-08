@@ -11,4 +11,6 @@ import com.example.denys.androidticketfinder.getStation.Station;
 public class Ticket {
     public Station fromStation = new Station();
     public Station tillStation = new Station();
+    public long fromDate;
+    public long tillDate;
 }
