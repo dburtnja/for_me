@@ -9,6 +9,8 @@ import com.example.denys.androidticketfinder.getStation.Station;
  */
 
 public class Ticket {
+    public boolean sound;
+    public int seekBarVal;
     public Station fromStation = new Station();
     public Station tillStation = new Station();
     public long fromDate;

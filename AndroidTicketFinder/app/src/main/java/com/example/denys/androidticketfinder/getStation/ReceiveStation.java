@@ -1,10 +1,9 @@
 package com.example.denys.androidticketfinder.getStation;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.denys.androidticketfinder.Ticket.Ticket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,9 +52,9 @@ public class ReceiveStation {
 
                 reader = new BufferedReader(new InputStreamReader(stream));
 
-                StringBuffer buffer = new StringBuffer();
-
-                String line = "";
+                StringBuilder buffer = new StringBuilder();
+                Log.d("receiveStation cookie", connection.getHeaderField(3));
+                String line;
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);
                 }

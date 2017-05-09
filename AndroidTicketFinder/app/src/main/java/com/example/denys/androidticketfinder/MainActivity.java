@@ -1,9 +1,6 @@
 package com.example.denys.androidticketfinder;
 
 import android.app.DatePickerDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -16,12 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.denys.androidticketfinder.Search.Search;
 import com.example.denys.androidticketfinder.Ticket.Ticket;
 import com.example.denys.androidticketfinder.getStation.ReceiveStation;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public TextView tillData;
     public TextView tillTime;
     public Button stop;
+    public Intent intent;
+    private TextView cheackTime;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         fromTime = (TextView) findViewById(R.id.fromTime);
         tillTime = (TextView) findViewById(R.id.tillTime);
         stop = (Button) findViewById(R.id.stop);
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        cheackTime = (TextView) findViewById(R.id.cheackTime);
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm");
 
         final int monthP;
+        seekBar.setEnabled(true);
+        ticket.seekBarVal = 20;
 
         monthP = month + 1;
         fromData.setText("Дата: " + (day < 10 ? "0" + day : day) + "." + (monthP < 10 ? "0" + monthP : monthP) + "." + year);
@@ -72,10 +77,24 @@ public class MainActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.d("ticket time", fromData.getText() + "-" + fromTime.getText());
-        Log.d("ticket time", ticket.fromDate + "");
-        Log.d("timezone", calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
 
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                cheackTime.setText((progress + 1) + " х.");
+                ticket.seekBarVal = progress + 1;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         fromTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,9 +213,15 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gson = new Gson();
+
                 if (ticket.fromStation.value != 0 || ticket.tillStation.value != 0) {
-                    Log.d("sdas","a");
-                    startService(new Intent(MainActivity.this, Search.class));
+                    statusView.setText("Веду пошук: з станції " + ticket.fromStation.label + " до станції " +
+                            ticket.tillStation.label);
+                    button.setEnabled(false);
+                    intent = new Intent(MainActivity.this, Search.class);
+                    intent.putExtra("ticket", gson.toJson(ticket));
+                    startService(intent);
                 } else {
                     statusView.setText("Помилка пошуку! Пошук не розпочато!!!");
                 }
@@ -206,7 +231,8 @@ public class MainActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopService(new Intent(MainActivity.this, Search.class));
+                stopService(intent);
+                statusView.setText("Пошук зупинено!");
             }
         });
     }
