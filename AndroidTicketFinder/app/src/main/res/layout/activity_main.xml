@@ -10,8 +10,9 @@
         android:layout_width="368dp"
         android:layout_height="495dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <TextView
             android:id="@+id/statusView"
@@ -26,16 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Rb]d" />
+            android:hint="Станція відправлення"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/tillStation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Kmdsd" />
+            android:hint="Станція прибуття"
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/textView3"
@@ -92,6 +93,95 @@
                 android:layout_weight="1"
                 android:text="Час: 23:59"
                 android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cbAny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkBoxListener"
+                android:text="Будь-який" />
+
+            <CheckBox
+                android:id="@+id/cbP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkBoxListener"
+                android:text="П" />
+
+            <CheckBox
+                android:id="@+id/cbK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkBoxListener"
+                android:text="К" />
+
+            <CheckBox
+                android:id="@+id/cbC1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkBoxListener"
+                android:text="С1" />
+
+            <CheckBox
+                android:id="@+id/cbC2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkBoxListener"
+                android:text="С2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/reservation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Резервування:" />
+
+                <EditText
+                    android:id="@+id/firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Імя"
+                    android:inputType="textPersonName"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Прізвище"
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

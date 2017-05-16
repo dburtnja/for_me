@@ -5,23 +5,30 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.denys.androidticketfinder.Search.Search;
+import com.example.denys.androidticketfinder.Ticket.Place;
 import com.example.denys.androidticketfinder.Ticket.Ticket;
 import com.example.denys.androidticketfinder.getStation.ReceiveStation;
 import com.google.gson.Gson;
 
+import java.net.CookieManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +46,14 @@ public class MainActivity extends AppCompatActivity {
     public TextView tillTime;
     public Button stop;
     public Intent intent;
-    private TextView cheackTime;
+    private TextView checkTime;
+    private CheckBox cbAny;
+    private CheckBox cbP;
+    private CheckBox cbK;
+    private CheckBox cbC1;
+    private CheckBox cbC2;
+    private TextView reservation;
+    public boolean resFlag = false;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -57,17 +71,24 @@ public class MainActivity extends AppCompatActivity {
         tillTime = (TextView) findViewById(R.id.tillTime);
         stop = (Button) findViewById(R.id.stop);
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-        cheackTime = (TextView) findViewById(R.id.cheackTime);
+        checkTime = (TextView) findViewById(R.id.cheackTime);
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
         final int year = calendar.get(Calendar.YEAR);
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm");
-
         final int monthP;
-        seekBar.setEnabled(true);
+        seekBar.setEnabled(true); //free
+        tillData.setEnabled(false);
         ticket.seekBarVal = 20;
+        cbAny = (CheckBox) findViewById(R.id.cbAny);
+        cbP = (CheckBox) findViewById(R.id.cbP);
+        cbK = (CheckBox) findViewById(R.id.cbK);
+        cbC1 = (CheckBox) findViewById(R.id.cbC1);
+        cbC2 = (CheckBox) findViewById(R.id.cbC2);
 
+
+        cbAny.setChecked(true);
         monthP = month + 1;
         fromData.setText("Дата: " + (day < 10 ? "0" + day : day) + "." + (monthP < 10 ? "0" + monthP : monthP) + "." + year);
         tillData.setText("Дата: " + (day < 10 ? "0" + day : day) + "." + (monthP < 10 ? "0" + monthP : monthP) + "." + year);
@@ -81,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                cheackTime.setText((progress + 1) + " х.");
+                checkTime.setText((progress + 1) + " х.");
                 ticket.seekBarVal = progress + 1;
             }
 
@@ -95,6 +116,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        //first and last name appears
+        findViewById(R.id.reservation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!resFlag) {
+                    findViewById(R.id.firstName).setVisibility(View.VISIBLE);
+                    findViewById(R.id.lastName).setVisibility(View.VISIBLE);
+                    resFlag = true;
+                } else {
+                    findViewById(R.id.firstName).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.lastName).setVisibility(View.GONE);
+                    resFlag = false;
+                }
+            }
+        });
+
 
         fromTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,9 +253,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Gson gson = new Gson();
 
-                if (ticket.fromStation.value != 0 || ticket.tillStation.value != 0) {
-                    statusView.setText("Веду пошук: з станції " + ticket.fromStation.label + " до станції " +
-                            ticket.tillStation.label);
+                if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
+                    ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
+                    statusView.setText("Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
+                            ticket.tillStation.title);
                     button.setEnabled(false);
                     intent = new Intent(MainActivity.this, Search.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
@@ -232,8 +271,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopService(intent);
+                button.setEnabled(true);
                 statusView.setText("Пошук зупинено!");
             }
         });
     }
+
+    public void checkBoxListener(View view) {
+        if (cbAny == view && cbAny.isChecked()) {
+            cbP.setChecked(false);
+            cbK.setChecked(false);
+            cbC1.setChecked(false);
+            cbC2.setChecked(false);
+        }
+        else
+            cbAny.setChecked(false);
+    }
+
 }

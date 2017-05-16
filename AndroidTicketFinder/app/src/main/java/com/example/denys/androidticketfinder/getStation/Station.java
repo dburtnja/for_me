@@ -5,6 +5,6 @@ package com.example.denys.androidticketfinder.getStation;
  */
 
 public class Station {
-    public String label;
+    public String title;
     public int value;
 }

@@ -95,8 +95,8 @@ public class ReceiveStation {
             else {
                 try {
                     station.value = result.getInt("value");
-                    station.label = result.getString("label");
-                    stationName.setText(result.getString("label"));
+                    station.title = result.getString("title");
+                    stationName.setText(result.getString("title"));
                 } catch (JSONException e) {
                     status.setText("Помилка пошуку станції");
                     e.printStackTrace();

@@ -6,8 +6,6 @@ import java.awt.Toolkit;
 import objects.Post;
 import objects.ticket.Ticket;
 
-import java.awt.*;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 
@@ -34,7 +32,7 @@ public class Add {
                     "&places[0][stud]=" +
                     "&places[0][transportation]=0" +
                     "&places[0][reserve]=0" +
-                    "&places[0][place_num]=" + ticket.palce_nbr;
+                    "&places[0][place_num]=" + ticket.place_nbr;
             System.out.println(param);
             testStr = (String) post.sendPost("http://booking.uz.gov.ua/cart/add/", param, null, ticket);
             System.out.println(param);

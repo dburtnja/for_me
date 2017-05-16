@@ -14,7 +14,7 @@ import sun.plugin2.util.SystemUtil;
 import javax.swing.*;
 
 public class Station {
-    public String label;
+    public String title;
     public int value;
 
     public Station(String label, JLabel serverResponse) {
@@ -37,7 +37,7 @@ public class Station {
                     new InputStreamReader(con.getInputStream(), "UTF-8"));
             Station[] stationsArray = gson.fromJson(in.readLine(), new TypeToken<Station[]>() {}.getType());
             this.value = stationsArray[0].value;
-            this.label = stationsArray[0].label;
+            this.title = stationsArray[0].title;
         } catch (Exception e) {
             serverResponse.setText("Помилка пошуку станції");
         }

@@ -89,7 +89,7 @@ public class Search {
                             ticket.train_nbr = ticket.search.value.get(i).getNum();
                             SendCoaches sendCoaches = new SendCoaches();
                             if (sendCoaches.SendCoachesFunc(ticket, post)) {
-                                findPlace.setText("Знайдено: " + ticket.coach_type + " " + ticket.palce_nbr);
+                                findPlace.setText("Знайдено: " + ticket.coach_type + " " + ticket.place_nbr);
                                 return true;
                             }
                         }
