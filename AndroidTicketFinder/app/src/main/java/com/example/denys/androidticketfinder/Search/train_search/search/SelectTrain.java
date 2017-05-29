@@ -1,6 +1,5 @@
 package com.example.denys.androidticketfinder.Search.train_search.search;
 
-import android.util.Log;
 
 import com.example.denys.androidticketfinder.Search.train_search.Post;
 import com.example.denys.androidticketfinder.Search.train_search.coaches.SendCoaches;

@@ -229,6 +229,7 @@
         <Button
             android:id="@+id/button"
             android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Пошук" />
