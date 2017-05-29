@@ -27,17 +27,6 @@ public class MyService extends Service {
         Search search = new Search(MyService.this, ticket);
         search.send();
 
-        try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            MediaPlayer player = MediaPlayer.create(MyService.this, notification);
-            player.setLooping(false);
-            player.start();
-            Vibrator v = (Vibrator) MyService.this.getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(500);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return START_STICKY;
     }
 

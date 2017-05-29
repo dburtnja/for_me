@@ -1,5 +1,7 @@
 package com.example.denys.androidticketfinder.Search;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -34,15 +37,23 @@ public class Search{
     private Context context;
     private Ticket ticket;
 
-    private Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            findTicket();
-        }
-    });
-
     public void send() {
         this.thread.start();
+    }
+
+    public void onCheckNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+        builder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(android.R.drawable.btn_star)
+                .setContentTitle("Перевірив" + ticket.fromStation.title + "=>" + ticket.tillStation.title)
+                .setContentText("Стан")
+                .setContentInfo("INfo");
+
+        NotificationManager nM = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nM.notify(1, builder.build());
     }
 
     public Search(Context context, Ticket ticket) {
@@ -50,6 +61,12 @@ public class Search{
         this.ticket = ticket;
     }
 
+    private Thread thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            findTicket();
+        }
+    });
 
     protected void findTicket() {
         Ticket ticket;
@@ -89,6 +106,8 @@ public class Search{
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);*/
             }
+            else
+                onCheckNotification();
         }
     }
 }
