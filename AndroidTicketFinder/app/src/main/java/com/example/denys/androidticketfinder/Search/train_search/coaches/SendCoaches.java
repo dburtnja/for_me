@@ -46,7 +46,13 @@ public class SendCoaches {
             e.printStackTrace();
             return false;
         }
-        ticket.coaches = (TestClass) post.sendPost("http://booking.uz.gov.ua/purchase/coaches/", coachesParam, TestClass.class, ticket);
+        Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/coaches/", coachesParam, TestClass.class, ticket);
+        if (obj.getClass() == String.class) {
+            Log.d("purchase/coaches/", (String) obj);
+            return false;
+        } else {
+            ticket.coaches = (TestClass) obj;
+        }
         selectCoach(ticket);
         String coachParam;
         try {

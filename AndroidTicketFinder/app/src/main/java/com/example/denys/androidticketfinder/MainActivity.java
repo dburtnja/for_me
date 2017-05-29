@@ -1,10 +1,14 @@
 package com.example.denys.androidticketfinder;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cbC2;
     private TextView reservation;
     public boolean resFlag = false;
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -78,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         final int year = calendar.get(Calendar.YEAR);
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm");
         final int monthP;
+
         seekBar.setEnabled(true); //free
         tillData.setEnabled(false);
         ticket.seekBarVal = 20;
@@ -252,15 +259,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Gson gson = new Gson();
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                 if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
                     ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
                     statusView.setText("Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
                             ticket.tillStation.title);
                     button.setEnabled(false);
-                    intent = new Intent(MainActivity.this, Search.class);
+
+                    intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
-                    startService(intent);
+                    pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
+
                 } else {
                     statusView.setText("Помилка пошуку! Пошук не розпочато!!!");
                 }
@@ -270,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopService(intent);
+                alarmManager.cancel(pendingIntent);
                 button.setEnabled(true);
                 statusView.setText("Пошук зупинено!");
             }

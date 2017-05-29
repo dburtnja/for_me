@@ -48,7 +48,7 @@ public class Post {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "UTF-8"));
             String str = in.readLine();
-            if (type != null) {
+            if (type != null){
                 Gson gson = new Gson();
                 try {
                     return gson.fromJson(str, type);
@@ -58,6 +58,7 @@ public class Post {
             } else
                 return str;
         } catch (Exception e) {
+            e.printStackTrace();
             return "Помилка методу POST за посиланням: " + url;
         }
     }

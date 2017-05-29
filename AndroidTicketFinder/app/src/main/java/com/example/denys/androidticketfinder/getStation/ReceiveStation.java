@@ -66,11 +66,7 @@ public class ReceiveStation {
 
                 return station;
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             } finally {
                 if (connection != null)
@@ -97,6 +93,7 @@ public class ReceiveStation {
                     station.value = result.getInt("value");
                     station.title = result.getString("title");
                     stationName.setText(result.getString("title"));
+                    Log.d("Station index", result.getInt("value") + "");
                 } catch (JSONException e) {
                     status.setText("Помилка пошуку станції");
                     e.printStackTrace();

@@ -20,9 +20,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Search.Search" />
+        <service android:name=".MyService" />
 
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".Main2Activity" />
     </application>
 
 </manifest>
