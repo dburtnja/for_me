@@ -30,4 +30,5 @@ public class Ticket {
     public int coach_num;
     public String coach_class;
     public Coach coach;
+    public String status;
 }

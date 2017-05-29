@@ -48,18 +48,20 @@ public class Post {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "UTF-8"));
             String str = in.readLine();
-            if (type != null){
+            if (type != null) {
                 Gson gson = new Gson();
                 try {
                     return gson.fromJson(str, type);
                 } catch (Exception e) {
-                    return str;
+                    ticket.status = str;
+                    return null;
                 }
-            } else
-                return str;
+            }
+            return str;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Помилка методу POST за посиланням: " + url;
+            ticket.status = "Помилка методу POST за посиланням: " + url;
+            return null;
         }
     }
 }

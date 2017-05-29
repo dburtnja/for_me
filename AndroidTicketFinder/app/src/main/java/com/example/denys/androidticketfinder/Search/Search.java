@@ -49,7 +49,7 @@ public class Search{
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(android.R.drawable.btn_star)
                 .setContentTitle("Перевірив" + ticket.fromStation.title + "=>" + ticket.tillStation.title)
-                .setContentText("Стан")
+                .setContentText(ticket.status)
                 .setContentInfo("INfo");
 
         NotificationManager nM = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -87,12 +87,7 @@ public class Search{
                         "&another_ec=0" +
                         "&search=";
         Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", train_searchParam, TrainSearch.class, ticket);
-        if (obj.getClass() == String.class) {
-            if (((String) obj).contains("Сервіс тимчасово недоступний"))
-                Log.d("string", "Сервіс тимчасово недоступний");
-            else
-                Log.d("string", (String) obj);
-        } else {
+        if (obj != null) {
             SelectTrain selectTrain = new SelectTrain();
             if (selectTrain.findPlace((TrainSearch)obj, ticket, post)) {
 
