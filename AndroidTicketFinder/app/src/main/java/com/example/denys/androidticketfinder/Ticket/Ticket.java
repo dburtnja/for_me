@@ -25,6 +25,7 @@ public class Ticket {
     public String coach_class;
     public Coach coach;
     public String status;
+    public boolean switch1;
 
 
     public class Station {

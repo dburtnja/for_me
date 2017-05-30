@@ -17,9 +17,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cbK;
     private CheckBox cbC1;
     private CheckBox cbC2;
+    private Switch switch1;
     private TextView reservation;
     public boolean resFlag = false;
     private PendingIntent pendingIntent;
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         stop = (Button) findViewById(R.id.stop);
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         checkTime = (TextView) findViewById(R.id.checkTime);
+        switch1 = (Switch) findViewById(R.id.switch1);
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
@@ -259,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
                     ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
+                    ticket.switch1 = switch1.isChecked();
                     Toast.makeText(MainActivity.this, "Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
                             ticket.tillStation.title, Toast.LENGTH_LONG).show();
                     button.setEnabled(false);
