@@ -15,7 +15,7 @@
     <string name="first_name">Ім\'я</string>
     <string name="last_name">Прізвище</string>
     <string name="text_view5">Час перевірки:</string>
-    <string name="check_time">20 хв.</string>
+    <string name="check_time">%1$d хв.</string>
     <string name="switch1">Сповіщати при оновленні</string>
     <string name="button">Пошук</string>
     <string name="stop">Зупинити пошук</string>

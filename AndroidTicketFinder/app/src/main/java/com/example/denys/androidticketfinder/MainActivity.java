@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         tillTime = (TextView) findViewById(R.id.tillTime);
         stop = (Button) findViewById(R.id.stop);
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-        checkTime = (TextView) findViewById(R.id.cheackTime);
+        checkTime = (TextView) findViewById(R.id.checkTime);
         final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         tillData.setEnabled(false);
         ticket.seekBarVal = 20;
+        checkTime.setText(getString(R.string.check_time, 20));
         cbAny = (CheckBox) findViewById(R.id.cbAny);
         cbP = (CheckBox) findViewById(R.id.cbP);
         cbK = (CheckBox) findViewById(R.id.cbK);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                checkTime.setText((progress + 1) + " х.");
+                checkTime.setText(getString(R.string.check_time, progress + 1));
                 ticket.seekBarVal = progress + 1;
             }
 
@@ -173,8 +174,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (ticket.tillDate < ticket.fromDate) {
                             ticket.tillDate = ticket.fromDate;
-                            tillData.setText(new SimpleDateFormat("Дата: dd.MM.yyyy").format(new Date(ticket.tillDate)));
-                            tillTime.setText(new SimpleDateFormat("Час: HH:mm").format(new Date(ticket.tillDate)));
+                            tillData.setText(new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault()).format(new Date(ticket.tillDate)));
+                            tillTime.setText(new SimpleDateFormat("Час: HH:mm", Locale.getDefault()).format(new Date(ticket.tillDate)));
                         }
                     }
                 }, 0, 0, true);
