@@ -9,41 +9,37 @@ import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.IdRes;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.example.denys.androidticketfinder.Search.Search;
 import com.example.denys.androidticketfinder.Ticket.Place;
 import com.example.denys.androidticketfinder.Ticket.Ticket;
 import com.example.denys.androidticketfinder.getStation.ReceiveStation;
 import com.google.gson.Gson;
 
-import java.net.CookieManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+    public Ticket ticket = new Ticket();
     public EditText fromStation;
     public EditText tillStation;
     public Button button;
-    public Ticket ticket = new Ticket();
-    public TextView statusView;
     public TextView fromData;
     public TextView fromTime;
     public TextView tillData;
@@ -70,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.button);
         fromStation = (EditText) findViewById(R.id.fromStation);
         tillStation = (EditText) findViewById(R.id.tillStation);
-        statusView = (TextView) findViewById(R.id.statusView);
         fromData = (TextView) findViewById(R.id.fromData);
         tillData = (TextView) findViewById(R.id.tillData);
         fromTime = (TextView) findViewById(R.id.fromTime);
@@ -82,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
         final int year = calendar.get(Calendar.YEAR);
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm");
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm", Locale.getDefault());
         final int monthP;
+        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        seekBar.setEnabled(true); //free
         tillData.setEnabled(false);
         ticket.seekBarVal = 20;
         cbAny = (CheckBox) findViewById(R.id.cbAny);
@@ -93,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         cbK = (CheckBox) findViewById(R.id.cbK);
         cbC1 = (CheckBox) findViewById(R.id.cbC1);
         cbC2 = (CheckBox) findViewById(R.id.cbC2);
+        seekBar.setEnabled(true); //free
+
 
 
         cbAny.setChecked(true);
@@ -238,9 +235,8 @@ public class MainActivity extends AppCompatActivity {
         fromStation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    statusView.setText("");
-                    new ReceiveStation(fromStation, ticket.fromStation, statusView);
+                if (!hasFocus && !fromStation.getText().toString().equals("")) {
+                    new ReceiveStation(fromStation, ticket.fromStation, MainActivity.this);
                 }
             }
         });
@@ -248,9 +244,8 @@ public class MainActivity extends AppCompatActivity {
         tillStation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    statusView.setText("");
-                    new ReceiveStation(tillStation, ticket.tillStation, statusView);
+                if (!hasFocus && !tillStation.getText().toString().equals("")) {
+                    new ReceiveStation(tillStation, ticket.tillStation, MainActivity.this);
                 }
             }
         });
@@ -263,17 +258,17 @@ public class MainActivity extends AppCompatActivity {
 
                 if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
                     ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
-                    statusView.setText("Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
-                            ticket.tillStation.title);
+                    Toast.makeText(MainActivity.this, "Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
+                            ticket.tillStation.title, Toast.LENGTH_LONG).show();
                     button.setEnabled(false);
 
                     intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
-
                 } else {
-                    statusView.setText("Помилка пошуку! Пошук не розпочато!!!");
+                    Toast.makeText(MainActivity.this, "Помилка, пошук не розпочато!", Toast.LENGTH_LONG).show();
+                    vibrator.vibrate(1000);
                 }
             }
         });
@@ -283,7 +278,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 alarmManager.cancel(pendingIntent);
                 button.setEnabled(true);
-                statusView.setText("Пошук зупинено!");
+                Toast.makeText(MainActivity.this, "Пошук зупинено", Toast.LENGTH_LONG).show();
+                vibrator.vibrate(500);
             }
         });
     }

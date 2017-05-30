@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">AndroidTicketFinder</string>
+    <string name="from_station">Станція відправлення</string>
+    <string name="till_station">Станція прибуття</string>
+    <string name="text_view3">Початкова дата відправлення:</string>
+    <string name="text_view4">Кінцева дата відправлення:</string>
+    <string name="from_time">Час: 00:00</string>
+    <string name="till_time">Час: 23:59</string>
+    <string name="cbAny">Будь-який</string>
+    <string name="cbP">П</string>
+    <string name="cbK">К</string>
+    <string name="cbC1">С1</string>
+    <string name="cbC2">С2</string>
+    <string name="reservation">Резервування:</string>
+    <string name="first_name">Ім\'я</string>
+    <string name="last_name">Прізвище</string>
+    <string name="text_view5">Час перевірки:</string>
+    <string name="check_time">20 хв.</string>
+    <string name="switch1">Сповіщати при оновленні</string>
+    <string name="button">Пошук</string>
+    <string name="stop">Зупинити пошук</string>
 </resources>

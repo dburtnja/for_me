@@ -1,16 +1,10 @@
 package com.example.denys.androidticketfinder.Ticket;
 
 
-import android.widget.TextView;
 
 import com.example.denys.androidticketfinder.Search.train_search.coach.Coach;
 import com.example.denys.androidticketfinder.Search.train_search.coaches.TestClass;
-import com.example.denys.androidticketfinder.getStation.Station;
 
-
-/**
- * Created by Denys on 07.05.2017.
- */
 
 public class Ticket {
     public int seekBarVal;
@@ -31,4 +25,10 @@ public class Ticket {
     public String coach_class;
     public Coach coach;
     public String status;
+
+
+    public class Station {
+        public String title;
+        public Integer value;
+    }
 }

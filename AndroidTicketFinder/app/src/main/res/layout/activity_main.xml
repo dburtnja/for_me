@@ -7,27 +7,29 @@
     tools:context="com.example.denys.androidticketfinder.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
-
-        <TextView
-            android:id="@+id/statusView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Статус"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="24sp" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/fromStation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Станція відправлення"
+            android:hint="@string/from_station"
             android:inputType="textPersonName" />
 
         <EditText
@@ -35,14 +37,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Станція прибуття"
+            android:hint="@string/till_station"
             android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Початкова дата відправчлення:" />
+            android:text="@string/text_view3" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,15 +56,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Дата: 08.05.2017"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/fromTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/from_time"
                 android:layout_weight="1"
-                android:text="Час: 00:00"
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -71,7 +72,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Кінцева дата відправлення:" />
+            android:text="@string/text_view4" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +84,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Дата: 08.05.2017"
                 android:textSize="18sp" />
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Час: 23:59"
+                android:text="@string/from_time"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="checkBoxListener"
-                android:text="Будь-який" />
+                android:text="@string/cbAny" />
 
             <CheckBox
                 android:id="@+id/cbP"
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="checkBoxListener"
-                android:text="П" />
+                android:text="@string/cbP" />
 
             <CheckBox
                 android:id="@+id/cbK"
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="checkBoxListener"
-                android:text="К" />
+                android:text="@string/cbK" />
 
             <CheckBox
                 android:id="@+id/cbC1"
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="checkBoxListener"
-                android:text="С1" />
+                android:text="@string/cbC1" />
 
             <CheckBox
                 android:id="@+id/cbC2"
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="checkBoxListener"
-                android:text="С2" />
+                android:text="@string/cbC2" />
         </LinearLayout>
 
         <LinearLayout
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Резервування:" />
+                    android:text="@string/reservation" />
 
                 <EditText
                     android:id="@+id/firstName"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Імя"
+                    android:hint="@string/first_name"
                     android:inputType="textPersonName"
                     android:visibility="gone" />
 
@@ -176,9 +176,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Прізвище"
+                    android:hint="@string/last_name"
                     android:inputType="textPersonName"
-                    android:text="Name"
                     android:visibility="invisible" />
             </LinearLayout>
 
@@ -194,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Час перевірки:" />
+                android:text="@string/text_view5" />
 
         </LinearLayout>
 
@@ -204,11 +203,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/cheackTime"
+                android:id="@+id/checkTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="20 хв" />
+                android:text="@string/check_time" />
 
             <SeekBar
                 android:id="@+id/seekBar"
@@ -224,7 +223,7 @@
             android:id="@+id/switch1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Сповіщати при оновленні" />
+            android:text="@string/switch1" />
 
         <Button
             android:id="@+id/button"
@@ -232,13 +231,13 @@
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Пошук" />
+            android:text="@string/button" />
 
         <Button
             android:id="@+id/stop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Зупинити пошук" />
+            android:text="@string/stop" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

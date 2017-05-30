@@ -1,104 +1,81 @@
 package com.example.denys.androidticketfinder.getStation;
 
-import android.os.AsyncTask;
+import android.content.Context;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.denys.androidticketfinder.Ticket.Ticket;
+
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLEncoder;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ReceiveStation {
-    private Station station;
-    private TextView status;
+    private final Vibrator vibrator;
+    private Context context;
     private EditText stationName;
 
-    public ReceiveStation(EditText stationName, Station station, TextView status) {
-        this.station = station;
-        this.status = status;
+    public ReceiveStation(final EditText stationName, final Ticket.Station station, final Context context) {
+        String url = "http://booking.uz.gov.ua/mobile/train_search/station/?term=";
+        RequestQueue queue = Volley.newRequestQueue(context);
+
         this.stationName = stationName;
+        this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        this.context = context;
+        station.title = null;
+        station.value = 0;
         try {
-            new JSONTask().execute("http://booking.uz.gov.ua/mobile/train_search/station/?term=" + URLEncoder.encode(String.valueOf(stationName.getText()), "UTF-8"));
+             url = url + URLEncoder.encode(String.valueOf(stationName.getText()), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+        Response.Listener<JSONArray> onGetLoaded = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    JSONObject jsonObject = response.getJSONObject(0);
+                    station.value = jsonObject.getInt("value");
+                    station.title = jsonObject.getString("title");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (station.title != null && station.value != 0) {
+                    stationName.setText(station.title);
+                    Toast.makeText(context,
+                            "Отримана станція " + station.title +
+                            " із значенням " + station.value,
+                            Toast.LENGTH_SHORT).show();
+                } else
+                    errorGet();
+            }
+        };
+
+        Response.ErrorListener onGetError = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("GET_ERROR", error.getMessage());
+                errorGet();
+            }
+        };
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, onGetLoaded, onGetError);
+        queue.add(jsonArrayRequest);
     }
 
-    public class JSONTask extends AsyncTask<String, String, JSONObject> {
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuilder buffer = new StringBuilder();
-                Log.d("receiveStation cookie", connection.getHeaderField(3));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
-                }
-
-                String finalJson = buffer.toString();
-
-                JSONArray array = new JSONArray(finalJson);
-                JSONObject station = array.getJSONObject(0);
-
-                return station;
-
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null)
-                    connection.disconnect();
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject result) {
-            super.onPostExecute(result);
-            if (result == null) {
-                status.setText("Помилка пошуку станції");
-                stationName.setText("");
-            }
-            else {
-                try {
-                    station.value = result.getInt("value");
-                    station.title = result.getString("title");
-                    stationName.setText(result.getString("title"));
-                    Log.d("Station index", result.getInt("value") + "");
-                } catch (JSONException e) {
-                    status.setText("Помилка пошуку станції");
-                    e.printStackTrace();
-                }
-            }
-        }
+    private void errorGet() {
+        stationName.setText("");
+        Toast.makeText(context, "Помилка отримання станції", Toast.LENGTH_LONG).show();
+        vibrator.vibrate(500);
     }
 }
