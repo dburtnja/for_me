@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,12 +37,38 @@ import java.util.TimerTask;
 public class Search{
     private Context context;
     private Ticket ticket;
+    private SimpleDateFormat simpleDate;
+    private SimpleDateFormat simpleTime;
 
-    public void send() {
-        this.thread.start();
+    public Search(Context context, Ticket ticket) {
+        this.context = context;
+        this.ticket = ticket;
+        this.simpleDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        this.simpleTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
     }
 
-    public void onCheckNotification() {
+    protected void findTicket() {
+        final Post post = new Post();
+
+        Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", train_searchParam, TrainSearch.class, ticket);
+
+    }
+
+    private String getSearchParam(Ticket ticket) {
+        Date fromData = new Date(ticket.fromDate);
+        Date tillData = new Date(ticket.tillDate);
+        return "station_id_from=" + ticket.fromStation.value +
+                "&station_id_till=" + ticket.tillStation.value +
+                "&station_from=" +
+                "&station_till=" +
+                "&date_dep=" + simpleDate.format(fromData) +
+                "&time_dep=" + simpleTime.format(fromData) +
+                "&time_dep_till=" + simpleTime.format(tillData) +
+                "&another_ec=0" +
+                "&search=";
+    }
+
+    private void onCheckNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         builder.setAutoCancel(true)
@@ -55,39 +82,11 @@ public class Search{
         NotificationManager nM = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nM.notify(1, builder.build());
     }
+}
 
-    public Search(Context context, Ticket ticket) {
-        this.context = context;
-        this.ticket = ticket;
-    }
+/*
 
-    private Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            findTicket();
-        }
-    });
-
-    protected void findTicket() {
-        Ticket ticket;
-        final Post post = new Post();
-        final SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
-        final SimpleDateFormat simpleTime = new SimpleDateFormat("HH:mm");
-        ticket = this.ticket;
-        Date fromData = new Date(ticket.fromDate);
-        Date tillData = new Date(ticket.tillDate);
-        String train_searchParam =
-                "station_id_from=" + ticket.fromStation.value +
-                        "&station_id_till=" + ticket.tillStation.value +
-                        "&station_from=" +
-                        "&station_till=" +
-                        "&date_dep=" + simpleDate.format(fromData) +
-                        "&time_dep=" + simpleTime.format(fromData) +
-                        "&time_dep_till=" + simpleTime.format(tillData) +
-                        "&another_ec=0" +
-                        "&search=";
-        Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", train_searchParam, TrainSearch.class, ticket);
-        if (obj != null) {
+if (obj != null) {
             SelectTrain selectTrain = new SelectTrain();
             if (selectTrain.findPlace((TrainSearch)obj, ticket, post)) {
 
@@ -95,14 +94,13 @@ public class Search{
                 MediaPlayer player = MediaPlayer.create(context, notification);
                 player.setLooping(true);
                 player.start();
-               /* Search.this.timer.cancel();
+                Search.this.timer.cancel();
                 Intent intent1 = new Intent(Search.this, Main2Activity.class);
                 intent1.putExtra("_gv_sessid", ticket.cookie);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);*/
+                startActivity(intent1);
             }
-            else
-                onCheckNotification();
-        }
-    }
-}
+                    else
+                    onCheckNotification();
+                    }
+ */

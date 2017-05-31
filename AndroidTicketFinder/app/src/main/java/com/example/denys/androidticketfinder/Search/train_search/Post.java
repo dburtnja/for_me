@@ -19,7 +19,14 @@ import java.net.URL;
 public class Post {
 
     public Object sendPost(String url, String urlParameters, Type type, Ticket ticket) {
-        try {
+
+    }
+}
+
+/*
+*
+*
+* try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -63,5 +70,6 @@ public class Post {
             ticket.status = "Помилка методу POST за посиланням: " + url;
             return null;
         }
-    }
-}
+*
+*
+ */
