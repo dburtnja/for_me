@@ -103,6 +103,7 @@ public class Search{
             }
             else
                 onCheckNotification();
-        }
+        } else
+            onCheckNotification();
     }
 }

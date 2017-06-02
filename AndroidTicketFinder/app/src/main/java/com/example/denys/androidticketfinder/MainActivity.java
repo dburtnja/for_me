@@ -270,7 +270,8 @@ public class MainActivity extends AppCompatActivity {
                     intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
+                    Log.d("time", SystemClock.elapsedRealtime() + "");
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, 60000 * ticket.seekBarVal, pendingIntent);
 
                 } else {
                     statusView.setText("Помилка пошуку! Пошук не розпочато!!!");

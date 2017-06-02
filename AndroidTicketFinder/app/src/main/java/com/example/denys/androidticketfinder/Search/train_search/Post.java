@@ -48,6 +48,7 @@ public class Post {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "UTF-8"));
             String str = in.readLine();
+            Log.d("Response:", str);
             if (type != null) {
                 Gson gson = new Gson();
                 try {
