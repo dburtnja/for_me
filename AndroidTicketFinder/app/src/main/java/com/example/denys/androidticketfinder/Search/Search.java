@@ -47,18 +47,40 @@ public class Search{
     }
 
     public void findTicket() {
-        final Post  post;
-        String      searchParam;
         long        nextDayTime;
 
-        post = new Post();
         nextDayTime = ticket.mainFromDate;
         while (nextDayTime < ticket.tillDate) {
             ticket.fromDate = nextDayTime;
-            searchParam = getSearchParam(ticket);
+            checkForTrain(ticket);
             nextDayTime = getNextDayTime(nextDayTime);
-            Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", searchParam,
-                    TrainSearch.class, ticket);
+        }
+    }
+
+    private void checkForTrain(Ticket ticket) {
+        final Post  post;
+        String      searchParam;
+        SelectTrain selectTrain;
+
+        post = new Post();
+        searchParam = getSearchParam(ticket);
+        Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", searchParam,
+                TrainSearch.class, ticket);
+        if (obj != null) {
+            selectTrain = new SelectTrain();
+            if (selectTrain.findPlace((TrainSearch)obj, ticket, post)) {
+
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                MediaPlayer player = MediaPlayer.create(context, notification);
+                player.setLooping(true);
+                player.start();
+     /*           Intent intent1 = new Intent(this, MainActivity.class);
+                intent1.putExtra("_gv_sessid", ticket.cookie);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);*/
+            }
+            else
+                onCheckNotification();
         }
     }
 
@@ -100,7 +122,7 @@ public class Search{
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(android.R.drawable.btn_star)
-                .setContentTitle("Перевірив" + ticket.fromStation.title + "=>" + ticket.tillStation.title)
+                .setContentTitle("Перевірив" + ticket.fromStation.title + " => " + ticket.tillStation.title)
                 .setContentText(ticket.status)
                 .setContentInfo("INfo");
 
