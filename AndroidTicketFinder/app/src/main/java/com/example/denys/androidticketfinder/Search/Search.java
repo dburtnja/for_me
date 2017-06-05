@@ -24,17 +24,16 @@ import com.example.denys.androidticketfinder.Search.train_search.search.TrainSea
 import com.example.denys.androidticketfinder.Ticket.Ticket;
 import com.google.gson.Gson;
 
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by Denys on 08.05.2017.
- */
-
 public class Search{
+    private static long DAY = 86400000;
     private Context context;
     private Ticket ticket;
     private SimpleDateFormat simpleDate;
@@ -47,11 +46,37 @@ public class Search{
         this.simpleTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
     }
 
-    protected void findTicket() {
-        final Post post = new Post();
+    public void findTicket() {
+        final Post  post;
+        String      searchParam;
+        long        nextDayTime;
 
-        Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", train_searchParam, TrainSearch.class, ticket);
+        post = new Post();
+        nextDayTime = ticket.mainFromDate;
+        while (nextDayTime < ticket.tillDate) {
+            ticket.fromDate = nextDayTime;
+            searchParam = getSearchParam(ticket);
+            nextDayTime = getNextDayTime(nextDayTime);
+            Object obj = post.sendPost("http://booking.uz.gov.ua/purchase/search/", searchParam,
+                    TrainSearch.class, ticket);
+        }
+    }
 
+    private long getNextDayTime(long inputTime) {
+        Date    nextDayDate;
+        Date    plusDay;
+
+        nextDayDate = null;
+        plusDay = new Date(inputTime + DAY);
+        try {
+            nextDayDate = simpleDate.parse(simpleDate.format(plusDay));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (nextDayDate == null)
+            return (-1);
+        else
+            return (nextDayDate.getTime());
     }
 
     private String getSearchParam(Ticket ticket) {

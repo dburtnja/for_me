@@ -25,7 +25,7 @@ public class MyService extends Service {
         Gson gson = new Gson();
         Ticket ticket = gson.fromJson(intent.getStringExtra("ticket"), Ticket.class);
         Search search = new Search(MyService.this, ticket);
-        search.send();
+        search.findTicket();
 
         return START_STICKY;
     }

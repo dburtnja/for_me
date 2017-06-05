@@ -7,10 +7,12 @@ import com.example.denys.androidticketfinder.Search.train_search.coaches.TestCla
 
 
 public class Ticket {
+    public int errorCounter;
     public int seekBarVal;
     public Station fromStation = new Station();
     public Station tillStation = new Station();
     public long fromDate;
+    public long mainFromDate;
     public long tillDate;
     public String firstName;
     public String lastName;

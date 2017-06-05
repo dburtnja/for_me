@@ -1,9 +1,5 @@
 package com.example.denys.androidticketfinder.Search.train_search;
 
-/**
- * Created by Denys on 09.05.2017.
- */
-
 import android.util.Log;
 
 import com.example.denys.androidticketfinder.Ticket.Ticket;
@@ -19,7 +15,7 @@ import java.net.URL;
 public class Post {
 
     public Object sendPost(String url, String urlParameters, Type type, Ticket ticket) {
-
+        return new Object();
     }
 }
 

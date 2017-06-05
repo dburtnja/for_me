@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         final int monthP;
         final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        tillData.setEnabled(false);
         ticket.seekBarVal = 20;
         checkTime.setText(getString(R.string.check_time, 20));
         cbAny = (CheckBox) findViewById(R.id.cbAny);
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         fromData.setText("Дата: " + (day < 10 ? "0" + day : day) + "." + (monthP < 10 ? "0" + monthP : monthP) + "." + year);
         tillData.setText("Дата: " + (day < 10 ? "0" + day : day) + "." + (monthP < 10 ? "0" + monthP : monthP) + "." + year);
         try {
-            ticket.fromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
+            ticket.mainFromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
             ticket.tillDate = simpleDateFormat.parse(tillData.getText() + "-" + tillTime.getText()).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                         fromTime.setText("Час: " + (hourOfDay < 10 ? "0" + hourOfDay : hourOfDay) +
                                 ":" + (minute < 10 ? "0" + minute : minute));
                         try {
-                            ticket.fromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
+                            ticket.mainFromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
                             ticket.tillDate = simpleDateFormat.parse(tillData.getText() + "-" + tillTime.getText()).getTime();
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -176,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        if (ticket.tillDate < ticket.fromDate) {
-                            ticket.tillDate = ticket.fromDate;
+                        if (ticket.tillDate < ticket.mainFromDate) {
+                            ticket.tillDate = ticket.mainFromDate;
                             tillData.setText(new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault()).format(new Date(ticket.tillDate)));
                             tillTime.setText(new SimpleDateFormat("Час: HH:mm", Locale.getDefault()).format(new Date(ticket.tillDate)));
                         }
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                                 (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "." +
                                 (monthP < 10 ? "0" + monthP : monthP) + "." + year);
                         try {
-                            ticket.fromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
+                            ticket.mainFromDate = simpleDateFormat.parse(fromData.getText() + "-" + fromTime.getText()).getTime();
                             ticket.tillDate = simpleDateFormat.parse(tillData.getText() + "-" + tillTime.getText()).getTime();
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -232,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }, year, month, day);
-                datePickerDialog.getDatePicker().setMinDate(ticket.fromDate);
+                datePickerDialog.getDatePicker().setMinDate(ticket.mainFromDate);
                 datePickerDialog.show();
             }
         });
@@ -261,7 +260,8 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
+              //  if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
+                    ticket.errorCounter = 0;
                     ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
                     ticket.switch1 = switch1.isChecked();
                     Toast.makeText(MainActivity.this, "Веду пошук: з станції " + ticket.fromStation.title + " до станції " +
@@ -272,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
-                } else {
+            /*    } else {
                     Toast.makeText(MainActivity.this, "Помилка, пошук не розпочато!", Toast.LENGTH_LONG).show();
                     vibrator.vibrate(1000);
-                }
+                }*/
             }
         });
 
