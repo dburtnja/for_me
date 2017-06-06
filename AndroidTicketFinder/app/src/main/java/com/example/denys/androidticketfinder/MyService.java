@@ -1,7 +1,9 @@
 package com.example.denys.androidticketfinder;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -25,10 +27,19 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-        Gson gson = new Gson();
-        Ticket ticket = gson.fromJson(intent.getStringExtra("ticket"), Ticket.class);
-        Search search = new Search(MyService.this, ticket);
+        Gson            gson;
+        Ticket          ticket;
+        Search          search;
+        PendingIntent   pendingIntent;
+        AlarmManager    alarmManager;
+
+        gson = new Gson();
+        ticket = gson.fromJson(intent.getStringExtra("ticket"), Ticket.class);
+        search = new Search(MyService.this, ticket);
         search.findTicket();
+        pendingIntent = PendingIntent.getService(this, 10, intent, 0);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
         return START_STICKY;
     }
 

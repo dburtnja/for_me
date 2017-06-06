@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
                     intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
-                    pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+                    pendingIntent = PendingIntent.getService(MainActivity.this, 10, intent, 0);
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
             /*    } else {
                     Toast.makeText(MainActivity.this, "Помилка, пошук не розпочато!", Toast.LENGTH_LONG).show();
