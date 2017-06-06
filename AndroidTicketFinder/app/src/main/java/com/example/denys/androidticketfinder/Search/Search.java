@@ -74,7 +74,7 @@ public class Search{
                 MediaPlayer player = MediaPlayer.create(context, notification);
                 player.setLooping(true);
                 player.start();
-     /*           Intent intent1 = new Intent(this, MainActivity.class);
+    /*            Intent intent1 = new Intent(this, MainActivity.class);
                 intent1.putExtra("_gv_sessid", ticket.cookie);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);*/
