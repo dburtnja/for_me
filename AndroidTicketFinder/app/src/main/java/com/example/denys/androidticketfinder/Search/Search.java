@@ -17,6 +17,7 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,6 +32,9 @@ import com.example.denys.androidticketfinder.Search.train_search.search.TrainSea
 import com.example.denys.androidticketfinder.Ticket.Ticket;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,7 +83,11 @@ public class Search{
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Gson gson;
+
                         Log.d("SEARCH.Response", response);
+                        gson = new Gson();
+                        TrainSearch trainSearch = gson.fromJson(response, TrainSearch.class);
                     }
                 },
                 new Response.ErrorListener() {
@@ -88,6 +96,31 @@ public class Search{
                         Log.e("SEARCH.Error", error.getMessage());
                     }
                 }){
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String  json = null;
+
+
+                try {
+                    json = new String(response.data, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                return json;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers;
+
+                headers = new HashMap<>();
+                headers.put("User-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params;

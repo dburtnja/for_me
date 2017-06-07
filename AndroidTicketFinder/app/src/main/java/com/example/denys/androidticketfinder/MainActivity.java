@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-              //  if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
+                if (ticket.fromStation.value != 0 && ticket.tillStation.value != 0) {
                     ticket.errorCounter = 0;
                     ticket.place = new Place(cbAny, cbK, cbP, cbC1, cbC2);
                     ticket.switch1 = switch1.isChecked();
@@ -272,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 10, intent, 0);
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000 * ticket.seekBarVal, pendingIntent);
-            /*    } else {
+                } else {
                     Toast.makeText(MainActivity.this, "Помилка, пошук не розпочато!", Toast.LENGTH_LONG).show();
                     vibrator.vibrate(1000);
-                }*/
+                }
             }
         });
 
