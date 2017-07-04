@@ -36,14 +36,10 @@ public class Ticket {
     }
 
     public Station getStationFrom() {
-        if (stationFrom != null)
-            return stationFrom;
         return stationFrom;
     }
 
     public Station getStationTill() {
-        if (stationTill != null)
-            return stationTill;
         return stationTill;
     }
 
@@ -55,12 +51,32 @@ public class Ticket {
         this.stationTill = new Station(stationName, queue, context);
     }
 
-    private class Station {
+    public void replaceStantions() {
+        Station buf;
+
+        buf = stationFrom;
+        stationFrom = stationTill;
+        stationTill = buf;
+    }
+
+    public class Station {
         private String  title;
         private String  region;
         private int     value;
 
-        public Station(final EditText stationName, RequestQueue queue, final Context context) {
+        public String getTitle() {
+            return title;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        private Station(final EditText stationName, RequestQueue queue, final Context context) {
             JsonArrayRequest    getRequest;
             String              url;
 

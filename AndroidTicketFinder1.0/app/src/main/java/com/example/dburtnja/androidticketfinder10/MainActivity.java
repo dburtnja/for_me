@@ -36,8 +36,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus && !getStationTill.getText().toString().equals("")) {
-                    ticket.setStationFrom(getStationTill);
+                    ticket.setStationTill(getStationTill);
                 }
+            }
+        });
+
+        getReplaceStations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ticket.replaceStantions();
+                getStationFrom.setText(ticket.getStationFrom().getTitle());
+                getStationTill.setText(ticket.getStationTill().getTitle());
             }
         });
     }
