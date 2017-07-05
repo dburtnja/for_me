@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     ticket.dateFromStart.changeDate();
                 else if (view.getId() == R.id.dateFromEnd)
                     ticket.dateFromEnd.changeDate();
+                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
             }
         };
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     ticket.dateFromStart.changeTime();
                 else if (view.getId() == R.id.timeFromEnd)
                     ticket.dateFromEnd.changeTime();
+                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
             }
         };
 

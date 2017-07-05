@@ -12,6 +12,7 @@ import com.example.dburtnja.androidticketfinder10.MainActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -84,5 +85,32 @@ public class TicketDate {
         },cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
+    }
+
+    public void setEndDayIfNeeded(TicketDate start){
+        if (this.date <= start.date) {
+            this.date = start.getNextDayTime();
+            writeDate(23, 59);
+            dateView.setText(sDateFormat.format(new Date(date)));
+        }
+    }
+
+    public long getNextDayTime() {
+        SimpleDateFormat    simpleDate;
+        Date                nextDayDate;
+        Date                plusDay;
+
+        simpleDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        nextDayDate = null;
+        plusDay = new Date(date + 86400000);
+        try {
+            nextDayDate = simpleDate.parse(simpleDate.format(plusDay));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (nextDayDate == null)
+            return (date);
+        else
+            return (nextDayDate.getTime());
     }
 }
