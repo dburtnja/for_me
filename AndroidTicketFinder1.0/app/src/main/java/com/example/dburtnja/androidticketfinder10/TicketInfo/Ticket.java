@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dburtnja.androidticketfinder10.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,15 +23,18 @@ import java.net.URLEncoder;
 
 /**
  * Created by dburtnja on 04.07.17.
+ * Object keep all info
  */
 
 public class Ticket {
-    private Context         context;
+    private MainActivity    context;
     private RequestQueue    queue;
     private Station         stationFrom;
     private Station         stationTill;
+    public TicketDate       dateFromStart;
+    public TicketDate       dateFromEnd;
 
-    public Ticket(Context context) {
+    public Ticket(MainActivity context) {
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
     }
@@ -51,12 +55,14 @@ public class Ticket {
         this.stationTill = new Station(stationName, queue, context);
     }
 
-    public void replaceStantions() {
+    public void replaceStations(EditText sFrom, EditText sTill) {
         Station buf;
 
         buf = stationFrom;
         stationFrom = stationTill;
         stationTill = buf;
+        sFrom.setText(stationFrom != null ? stationFrom.getTitle() : "");
+        sTill.setText(stationTill != null ? stationTill.getTitle() : "");
     }
 
     public class Station {
