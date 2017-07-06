@@ -33,10 +33,28 @@ public class Ticket {
     private Station         stationTill;
     public TicketDate       dateFromStart;
     public TicketDate       dateFromEnd;
+    private Train           train;
+    private String          firstName;
+    private String          lastName;
 
-    public Ticket(MainActivity context) {
+    public Ticket(MainActivity context, Train train) {
         this.context = context;
         this.queue = Volley.newRequestQueue(context);
+        this.train = train;
+    }
+
+    public boolean setName(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        if (firstName == null || lastName == null){
+            toast("Відсутнє ім'я чи прізвище", context, true);
+            return false;
+        }
+        return true;
+    }
+
+    public Train getTrain() {
+        return train;
     }
 
     public Station getStationFrom() {
@@ -63,6 +81,16 @@ public class Ticket {
         stationTill = buf;
         sFrom.setText(stationFrom != null ? stationFrom.getTitle() : "");
         sTill.setText(stationTill != null ? stationTill.getTitle() : "");
+    }
+
+    public void toast(String msg, Context context, Boolean vibrate) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        if (vibrate) {
+            Vibrator    vibrator;
+
+            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);;
+            vibrator.vibrate(500);
+        }
     }
 
     public class Station {
@@ -120,16 +148,6 @@ public class Ticket {
                         }
                     });
             queue.add(getRequest);
-        }
-
-        public void toast(String msg, Context context, Boolean vibrate) {
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-            if (vibrate) {
-                Vibrator    vibrator;
-
-                vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);;
-                vibrator.vibrate(500);
-            }
         }
     }
 }

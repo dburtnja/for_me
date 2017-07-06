@@ -3,17 +3,23 @@ package com.example.dburtnja.androidticketfinder10;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Ticket;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.TicketDate;
+import com.example.dburtnja.androidticketfinder10.TicketInfo.Train;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Ticket          ticket;
     private EditText        getStationFrom;
     private EditText        getStationTill;
+    private CheckBox        checkBoxArray[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +27,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageButton     getReplaceStations;
+        Button          startButton;
+        Button          stopButton;
 
+        startButton = (Button) findViewById(R.id.start);
+        stopButton = (Button) findViewById(R.id.stop);
         getStationFrom = (EditText) findViewById(R.id.stationFrom);
         getStationTill = (EditText) findViewById(R.id.stationTill);
         getReplaceStations = (ImageButton) findViewById(R.id.replaceStations);
 
-        ticket = new Ticket(this);
+        ticket = new Ticket(this, new Train());
         ticket.dateFromStart = new TicketDate(this, R.id.dateFromStart, R.id.timeFromStart);
         ticket.dateFromEnd = new TicketDate(this, R.id.dateFromEnd, R.id.timeFromEnd);
 
@@ -75,12 +85,36 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        View.OnClickListener clickOnPlace = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ticket.getTrain().changeCoach(checkBoxArray);
+            }
+        };
+
         findViewById(R.id.dateFromStart).setOnClickListener(clickOnDate);
         findViewById(R.id.dateFromEnd).setOnClickListener(clickOnDate);
         findViewById(R.id.timeFromStart).setOnClickListener(clickOnTime);
         findViewById(R.id.timeFromEnd).setOnClickListener(clickOnTime);
 
-        findViewById(R.id.checkP).
+        checkBoxArray = new CheckBox[]{
+                (CheckBox) findViewById(R.id.checkP),
+                (CheckBox) findViewById(R.id.checkK),
+                (CheckBox) findViewById(R.id.checkC1),
+                (CheckBox) findViewById(R.id.checkC2)
+        };
+
+        for (CheckBox checkBox : checkBoxArray){
+            checkBox.setOnClickListener(clickOnPlace);
+        }
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
-    public void checkBoxLi
+
 }
