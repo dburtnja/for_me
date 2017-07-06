@@ -59,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.dateFromStart)
-                    ticket.dateFromStart.changeDate();
+                    ticket.dateFromStart.changeDate(ticket);
                 else if (view.getId() == R.id.dateFromEnd)
-                    ticket.dateFromEnd.changeDate();
-                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
+                    ticket.dateFromEnd.changeDate(ticket);
             }
         };
 
@@ -70,10 +69,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.timeFromStart)
-                    ticket.dateFromStart.changeTime();
+                    ticket.dateFromStart.changeTime(ticket);
                 else if (view.getId() == R.id.timeFromEnd)
-                    ticket.dateFromEnd.changeTime();
-                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
+                    ticket.dateFromEnd.changeTime(ticket);
             }
         };
 

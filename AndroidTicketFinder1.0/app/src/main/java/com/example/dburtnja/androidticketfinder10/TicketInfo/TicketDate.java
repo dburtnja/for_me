@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.dburtnja.androidticketfinder10.MainActivity;
 
@@ -23,6 +24,7 @@ import java.util.Locale;
 public class TicketDate {
     private MainActivity        mainActivity;
     private SimpleDateFormat    sDateFormat;
+    private SimpleDateFormat    sTimeFromat;
     private SimpleDateFormat    sFormat;
     private TextView            dateView;
     private TextView            timeView;
@@ -34,10 +36,18 @@ public class TicketDate {
         dateView = (TextView) activity.findViewById(dateId);
         timeView = (TextView) activity.findViewById(timeId);
         sDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault());
+        sTimeFromat = new SimpleDateFormat("Час: HH:mm", Locale.getDefault());
         sFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm", Locale.getDefault());
         c = Calendar.getInstance();
-        date = c.getTime().getTime();
-        dateView.setText(sDateFormat.format(c.getTime()));
+        dateView.setText(sDateFormat.format(c.getTime().getTime()));
+        try {
+            date = sFormat.parse(dateView.getText() + "-" + timeView.getText()).getTime();
+        } catch (ParseException e) {
+            date = c.getTime().getTime();
+            dateView.setText(sDateFormat.format(date));
+            timeView.setText(sTimeFromat.format(date));
+            e.printStackTrace();
+        }
         mainActivity = activity;
     }
 
@@ -59,28 +69,31 @@ public class TicketDate {
         }
     }
 
-    public void changeTime(){
+    public void changeTime(final Ticket ticket){
         TimePickerDialog    timePickerDialog;
 
         timePickerDialog = new TimePickerDialog(mainActivity, 0, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int h, int m) {
                 writeDate(h, m);
+                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
             }
         }, 0, 0, true);
         timePickerDialog.show();
     }
 
-    public void changeDate(){
+    public void changeDate(final Ticket ticket){
         DatePickerDialog    datePickerDialog;
         Calendar            cal;
 
         cal = Calendar.getInstance();
+        cal.setTimeInMillis(date);
         datePickerDialog = new DatePickerDialog(mainActivity, 0, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int y, int m, int d) {
                 m++;
                 writeDate(y, m, d);
+                ticket.dateFromEnd.setEndDayIfNeeded(ticket.dateFromStart);
             }
         },cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -89,9 +102,9 @@ public class TicketDate {
 
     public void setEndDayIfNeeded(TicketDate start){
         if (this.date <= start.date) {
-            this.date = start.getNextDayTime();
-            writeDate(23, 59);
-            dateView.setText(sDateFormat.format(new Date(date)));
+            this.date = start.getNextDayTime() - 60000; //next day minus 1 sec
+            this.dateView.setText(sDateFormat.format(date));
+            this.timeView.setText(sTimeFromat.format(date));
         }
     }
 
@@ -102,7 +115,7 @@ public class TicketDate {
 
         simpleDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         nextDayDate = null;
-        plusDay = new Date(date + 86400000);
+        plusDay = new Date(date + 86400000); // add one day
         try {
             nextDayDate = simpleDate.parse(simpleDate.format(plusDay));
         } catch (ParseException e) {
