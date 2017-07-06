@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.dburtnja.androidticketfinder10.MainActivity;
 
@@ -43,9 +42,8 @@ public class TicketDate {
         try {
             date = sFormat.parse(dateView.getText() + "-" + timeView.getText()).getTime();
         } catch (ParseException e) {
-            date = c.getTime().getTime();
-            dateView.setText(sDateFormat.format(date));
-            timeView.setText(sTimeFromat.format(date));
+            dateView.setText("Помилка");
+            timeView.setText("Помилка");
             e.printStackTrace();
         }
         mainActivity = activity;

@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.dateFromEnd).setOnClickListener(clickOnDate);
         findViewById(R.id.timeFromStart).setOnClickListener(clickOnTime);
         findViewById(R.id.timeFromEnd).setOnClickListener(clickOnTime);
-    }
 
+        findViewById(R.id.checkP).
+    }
+    public void checkBoxLi
 }
