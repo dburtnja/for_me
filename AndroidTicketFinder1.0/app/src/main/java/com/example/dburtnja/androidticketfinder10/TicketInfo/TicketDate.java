@@ -29,6 +29,10 @@ public class TicketDate {
     private TextView            timeView;
     private long                date;
 
+    public long getDate() {
+        return date;
+    }
+
     public TicketDate(MainActivity activity, int dateId, int timeId) {
         Calendar    c;
 
@@ -42,6 +46,7 @@ public class TicketDate {
         try {
             date = sFormat.parse(dateView.getText() + "-" + timeView.getText()).getTime();
         } catch (ParseException e) {
+            date = -1;
             dateView.setText("Помилка");
             timeView.setText("Помилка");
             e.printStackTrace();

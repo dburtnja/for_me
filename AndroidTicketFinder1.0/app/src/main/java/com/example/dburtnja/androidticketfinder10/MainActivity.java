@@ -1,5 +1,7 @@
 package com.example.dburtnja.androidticketfinder10;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Ticket;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.TicketDate;
@@ -111,10 +114,25 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ticket.checkIfAllSet()){
 
+
+                }
             }
         });
+    }
 
+    public boolean toast(String msg, Boolean vibrate) {
+        if (vibrate) {
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            Vibrator vibrator;
+            vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(500);
+            return false;
+        } else {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            return true;
+        }
     }
 
 }

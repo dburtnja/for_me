@@ -1,10 +1,9 @@
 package com.example.dburtnja.androidticketfinder10.TicketInfo;
 
 import android.content.Context;
-import android.os.Vibrator;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,11 +42,11 @@ public class Ticket {
         this.train = train;
     }
 
-    public boolean setName(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null){
-            toast("Відсутнє ім'я чи прізвище", context, true);
+    public boolean setName(int firstName, int lastName){
+        this.firstName = ((TextView)context.findViewById(firstName)).getText().toString();
+        this.lastName = ((TextView)context.findViewById(lastName)).getText().toString();
+        if (this.firstName == null || this.lastName == null){
+            context.toast("Відсутнє ім'я чи прізвище", true);
             return false;
         }
         return true;
@@ -83,14 +82,22 @@ public class Ticket {
         sTill.setText(stationTill != null ? stationTill.getTitle() : "");
     }
 
-    public void toast(String msg, Context context, Boolean vibrate) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-        if (vibrate) {
-            Vibrator    vibrator;
-
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);;
-            vibrator.vibrate(500);
-        }
+    public boolean checkIfAllSet(){
+        if (stationFrom == null)
+            return context.toast("Відсутня станція відправлення", true);
+        else if (stationTill == null)
+            return context.toast("Відсутня станція прибуття", true);
+        else if (dateFromStart.getDate() == -1)
+            return context.toast("Відсутній час відправлення", true);
+        else if (dateFromEnd.getDate() == -1)
+            return context.toast("Відсутній кінцевий час відправлення", true);
+        else if (!train.coachIsSet(context))
+            return false;
+        else if (firstName == null)
+            return context.toast("Відсутнє ім'я", true);
+        else if (lastName == null)
+            return context.toast("Відсутнє прізвище", true);
+        return true;
     }
 
     public class Station {
@@ -110,7 +117,7 @@ public class Ticket {
             return value;
         }
 
-        private Station(final EditText stationName, RequestQueue queue, final Context context) {
+        private Station(final EditText stationName, RequestQueue queue, final MainActivity activity){
             JsonArrayRequest    getRequest;
             String              url;
 
@@ -118,7 +125,7 @@ public class Ticket {
             try {
                 url = url + URLEncoder.encode(String.valueOf(stationName.getText()), "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                toast("Помилка кодування станції", context, true);
+                activity.toast("Помилка кодування станції", true);
                 e.printStackTrace();
             }
             getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -133,17 +140,17 @@ public class Ticket {
                                 region = response.getString("region");
                                 value = response.getInt("value");
                             } catch (JSONException e) {
-                                toast("Помилка отримання станції", context, true);
+                                activity.toast("Помилка отримання станції", true);
                                 e.printStackTrace();
                             }
                             stationName.setText(title);
-                            toast("Станція: " + title + ". Значення: " + value, context, false);
+                            activity.toast("Станція: " + title + ". Значення: " + value, false);
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            toast("Помилка отримання даних станції", context, true);
+                            activity.toast("Помилка отримання даних станції", true);
                             Log.e("STATION_ERROR", error.getMessage());
                         }
                     });

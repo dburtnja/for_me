@@ -2,10 +2,12 @@ package com.example.dburtnja.androidticketfinder10.TicketInfo;
 
 import android.widget.CheckBox;
 
+import com.example.dburtnja.androidticketfinder10.MainActivity;
 import com.example.dburtnja.androidticketfinder10.R;
 
 /**
  * Created by dburtnja on 06.07.17.
+ * Coach type object
  */
 
 public class Train {
@@ -39,7 +41,12 @@ public class Train {
         }
     }
 
-    public boolean coachIsSet(){
-        return (C1 || C2 || P || K);
+    public boolean coachIsSet(MainActivity activity){
+        if (C1 || C2 || P || K)
+            return true;
+        else {
+            activity.toast("Не вказаний тип вагону", true);
+            return false;
+        }
     }
 }
