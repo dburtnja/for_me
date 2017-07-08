@@ -35,7 +35,6 @@ public class Main2Activity extends AppCompatActivity {
         url = "https://booking.uz.gov.ua/mobile/cart/";
         cookieManager = CookieManager.getInstance();
         webView = (WebView) findViewById(R.id.webView);
-        queue = Volley.newRequestQueue(this);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         cookieManager.setAcceptCookie(true);

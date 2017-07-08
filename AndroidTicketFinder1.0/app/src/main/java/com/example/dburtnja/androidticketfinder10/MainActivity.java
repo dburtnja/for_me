@@ -1,12 +1,18 @@
 package com.example.dburtnja.androidticketfinder10;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -117,10 +123,16 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent      intent;
+
                 ticket.setName(R.id.firstName, R.id.lastName);
                 if (ticket.checkIfAllSet()){
                     startButton.setEnabled(false);
-
+                    intent = new Intent(MainActivity.this, MyService.class);
+                    intent.putExtra("ticket", gson.toJson(ticket));
+                    pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+                    Log.d("time", SystemClock.elapsedRealtime() + "");
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, 60000 * ticket.seekBarVal, pendingIntent);
 
                 }
             }
