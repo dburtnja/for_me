@@ -1,6 +1,9 @@
 package com.example.dburtnja.androidticketfinder10;
 
 import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageButton     getReplaceStations;
-        Button          startButton;
-        Button          stopButton;
+        final Button          startButton;
+        final Button          stopButton;
 
         startButton = (Button) findViewById(R.id.start);
         stopButton = (Button) findViewById(R.id.stop);
@@ -114,10 +117,19 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ticket.setName(R.id.firstName, R.id.lastName);
                 if (ticket.checkIfAllSet()){
+                    startButton.setEnabled(false);
 
 
                 }
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startButton.setEnabled(true);
             }
         });
     }
@@ -135,4 +147,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Ringtone ringtone = RingtoneManager.getRingtone(this, notification);
+        ringtone.play();
+    }
 }

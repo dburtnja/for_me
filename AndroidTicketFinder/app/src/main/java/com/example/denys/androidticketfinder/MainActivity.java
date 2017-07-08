@@ -7,6 +7,10 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.IdRes;
@@ -60,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean resFlag = false;
     private PendingIntent pendingIntent;
     private AlarmManager alarmManager;
+
+    private void playMusic(int type){
+        Uri notification = RingtoneManager.getDefaultUri(type);
+        Ringtone ringtone = RingtoneManager.getRingtone(this, notification);
+        ringtone.play();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playMusic(RingtoneManager.TYPE_RINGTONE);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -282,7 +298,8 @@ public class MainActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alarmManager.cancel(pendingIntent);
+                if (pendingIntent != null)
+                   alarmManager.cancel(pendingIntent);
                 button.setEnabled(true);
                 statusView.setText("Пошук зупинено!");
             }
