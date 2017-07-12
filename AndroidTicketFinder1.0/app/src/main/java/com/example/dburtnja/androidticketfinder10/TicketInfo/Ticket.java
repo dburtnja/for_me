@@ -1,6 +1,5 @@
 package com.example.dburtnja.androidticketfinder10.TicketInfo;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +18,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by dburtnja on 04.07.17.
@@ -26,7 +27,7 @@ import java.net.URLEncoder;
  */
 
 public class Ticket {
-    private MainActivity    context;
+    private MainActivity    mainActivity;
     private RequestQueue    queue;
     private Station         stationFrom;
     private Station         stationTill;
@@ -35,18 +36,33 @@ public class Ticket {
     private Train           train;
     private String          firstName;
     private String          lastName;
+    public String           cookie;
+    private boolean         haveTicket;
+    public String           status;
+    public boolean          error;
+    private JSONObject      trainList;
 
     public Ticket(MainActivity context, Train train) {
-        this.context = context;
+        this.mainActivity = context;
         this.queue = Volley.newRequestQueue(context);
         this.train = train;
+        this.haveTicket = false;
+    }
+
+    public void setJsonObj(String jsonStr, String name) throws JSONException {
+        if (name == "trainList")
+            trainList = new JSONObject(jsonStr);
+    }
+
+    public boolean isHaveTicket() {
+        return haveTicket;
     }
 
     public boolean setName(int firstName, int lastName){
-        this.firstName = ((TextView)context.findViewById(firstName)).getText().toString();
-        this.lastName = ((TextView)context.findViewById(lastName)).getText().toString();
+        this.firstName = ((TextView) mainActivity.findViewById(firstName)).getText().toString();
+        this.lastName = ((TextView) mainActivity.findViewById(lastName)).getText().toString();
         if (this.firstName == null || this.lastName == null){
-            context.toast("Відсутнє ім'я чи прізвище", true);
+            mainActivity.toast("Відсутнє ім'я чи прізвище", true);
             return false;
         }
         return true;
@@ -65,11 +81,11 @@ public class Ticket {
     }
 
     public void setStationFrom(EditText stationName) {
-        this.stationFrom = new Station(stationName, queue, context);
+        this.stationFrom = new Station(stationName, queue, mainActivity);
     }
 
     public void setStationTill(EditText stationName) {
-        this.stationTill = new Station(stationName, queue, context);
+        this.stationTill = new Station(stationName, queue, mainActivity);
     }
 
     public void replaceStations(EditText sFrom, EditText sTill) {
@@ -84,20 +100,31 @@ public class Ticket {
 
     public boolean checkIfAllSet(){
         if (stationFrom == null)
-            return context.toast("Відсутня станція відправлення", true);
+            return mainActivity.toast("Відсутня станція відправлення", true);
         else if (stationTill == null)
-            return context.toast("Відсутня станція прибуття", true);
+            return mainActivity.toast("Відсутня станція прибуття", true);
         else if (dateFromStart.getDate() == -1)
-            return context.toast("Відсутній час відправлення", true);
+            return mainActivity.toast("Відсутній час відправлення", true);
         else if (dateFromEnd.getDate() == -1)
-            return context.toast("Відсутній кінцевий час відправлення", true);
-        else if (!train.coachIsSet(context))
+            return mainActivity.toast("Відсутній кінцевий час відправлення", true);
+        else if (!train.coachIsSet(mainActivity))
             return false;
-        else if (firstName == null)
-            return context.toast("Відсутнє ім'я", true);
-        else if (lastName == null)
-            return context.toast("Відсутнє прізвище", true);
+        else if (firstName == null || firstName.equals(""))
+            return mainActivity.toast("Відсутнє ім'я", true);
+        else if (lastName == null || firstName.equals(""))
+            return mainActivity.toast("Відсутнє прізвище", true);
         return true;
+    }
+
+    public Map<String, String> getSearchParam(){
+        Map<String, String> params;
+
+        params = new HashMap<>();
+        params.put("date", dateFromStart.getStrDate());
+        params.put("from", stationFrom.getValue() + "");
+        params.put("time", dateFromStart.getStrTime());
+        params.put("to", stationTill.getValue() + "");
+        return (params);
     }
 
     public class Station {

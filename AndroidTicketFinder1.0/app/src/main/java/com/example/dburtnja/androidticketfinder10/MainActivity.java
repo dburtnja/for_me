@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Ticket;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.TicketDate;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Train;
+import com.google.gson.Gson;
 
 import java.util.Map;
 
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText        getStationFrom;
     private EditText        getStationTill;
     private CheckBox        checkBoxArray[];
+    private PendingIntent   pendingIntent;
+    private AlarmManager    alarmManager;
+    private Gson            gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageButton     getReplaceStations;
-        final Button          startButton;
-        final Button          stopButton;
+        final Button    startButton = (Button) findViewById(R.id.start);
+        Button          stopButton;
+        Button          lookUp;
 
-        startButton = (Button) findViewById(R.id.start);
+        gson = new Gson();
+        lookUp = (Button) findViewById(R.id.lookUp);
         stopButton = (Button) findViewById(R.id.stop);
         getStationFrom = (EditText) findViewById(R.id.stationFrom);
         getStationTill = (EditText) findViewById(R.id.stationTill);
@@ -125,16 +131,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent      intent;
 
+                alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 ticket.setName(R.id.firstName, R.id.lastName);
                 if (ticket.checkIfAllSet()){
                     startButton.setEnabled(false);
                     intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-                    Log.d("time", SystemClock.elapsedRealtime() + "");
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, 60000 * ticket.seekBarVal, pendingIntent);
-
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
                 }
+            }
+        });
+
+        lookUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent  intent;
+
+                intent = new Intent(MainActivity.this, Main2Activity.class);
+                intent.putExtra("ticket", gson.toJson(ticket));
+                startActivity(intent);
             }
         });
 

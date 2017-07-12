@@ -25,12 +25,22 @@ public class TicketDate {
     private SimpleDateFormat    sDateFormat;
     private SimpleDateFormat    sTimeFromat;
     private SimpleDateFormat    sFormat;
+    private SimpleDateFormat    sDateTicketFormat;
+    private SimpleDateFormat    sTimeTicketFormat;
     private TextView            dateView;
     private TextView            timeView;
     private long                date;
 
     public long getDate() {
         return date;
+    }
+
+    public String getStrDate() {
+        return sDateTicketFormat.format(date);
+    }
+
+    public String getStrTime(){
+        return sTimeTicketFormat.format(date);
     }
 
     public TicketDate(MainActivity activity, int dateId, int timeId) {
@@ -41,6 +51,8 @@ public class TicketDate {
         sDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault());
         sTimeFromat = new SimpleDateFormat("Час: HH:mm", Locale.getDefault());
         sFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm", Locale.getDefault());
+        sDateTicketFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sTimeTicketFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         c = Calendar.getInstance();
         dateView.setText(sDateFormat.format(c.getTime().getTime()));
         try {
