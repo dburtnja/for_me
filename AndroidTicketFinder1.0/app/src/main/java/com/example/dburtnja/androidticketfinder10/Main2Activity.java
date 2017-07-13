@@ -32,21 +32,22 @@ public class Main2Activity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         ticket = gson.fromJson(savedInstanceState.getString("ticket"), Ticket.class);
-        if (ticket.isHaveTicket())
+      /*  if (ticket.isHaveTicket())
             webView.loadUrl(showCart(ticket));
         else
-            webView.loadUrl(showSearchDay(ticket));
+            webView.loadUrl(showSearchDay(ticket));*/
     }
 
     private String showSearchDay(Ticket ticket){
         String  url;
 
-        url = "http://booking.uz.gov.ua/?" +
+        url = "s";
+      /*  url = "http://booking.uz.gov.ua/?" +
                 "date=" + ticket.dateFromStart.getStrDate() +
                 "&from=" + ticket.getStationFrom().getValue() +
                 "&time=" + ticket.dateFromStart + //might need : parse
                 "&to=" + ticket.getStationTill().getValue() +
-                "&url=train-list";
+                "&url=train-list";*/
         return (url);
     }
 

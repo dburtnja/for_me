@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Ticket;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.TicketDate;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Train;
@@ -46,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         final Button    startButton = (Button) findViewById(R.id.start);
         Button          stopButton;
         Button          lookUp;
+        final RequestQueue    queue;
 
+        queue = Volley.newRequestQueue(this);
         gson = new Gson();
         lookUp = (Button) findViewById(R.id.lookUp);
         stopButton = (Button) findViewById(R.id.stop);
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         getStationTill = (EditText) findViewById(R.id.stationTill);
         getReplaceStations = (ImageButton) findViewById(R.id.replaceStations);
 
-        ticket = new Ticket(this, new Train());
+        ticket = new Ticket(new Train());
         ticket.dateFromStart = new TicketDate(this, R.id.dateFromStart, R.id.timeFromStart);
         ticket.dateFromEnd = new TicketDate(this, R.id.dateFromEnd, R.id.timeFromEnd);
 
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus && !getStationFrom.getText().toString().equals("")) {
-                    ticket.setStationFrom(getStationFrom);
+                    ticket.setStationFrom(getStationFrom, queue, MainActivity.this);
                 }
             }
         });
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus && !getStationTill.getText().toString().equals("")) {
-                    ticket.setStationTill(getStationTill);
+                    ticket.setStationTill(getStationTill, queue, MainActivity.this);
                 }
             }
         });
@@ -87,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.dateFromStart)
-                    ticket.dateFromStart.changeDate(ticket);
+                    ticket.dateFromStart.changeDate(ticket, MainActivity.this);
                 else if (view.getId() == R.id.dateFromEnd)
-                    ticket.dateFromEnd.changeDate(ticket);
+                    ticket.dateFromEnd.changeDate(ticket, MainActivity.this);
             }
         };
 
@@ -97,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.timeFromStart)
-                    ticket.dateFromStart.changeTime(ticket);
+                    ticket.dateFromStart.changeTime(ticket, MainActivity.this);
                 else if (view.getId() == R.id.timeFromEnd)
-                    ticket.dateFromEnd.changeTime(ticket);
+                    ticket.dateFromEnd.changeTime(ticket, MainActivity.this);
             }
         };
 
@@ -132,13 +136,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent      intent;
 
                 alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                ticket.setName(R.id.firstName, R.id.lastName);
-                if (ticket.checkIfAllSet()){
+                ticket.setName(R.id.firstName, R.id.lastName, MainActivity.this);
+                if (ticket.checkIfAllSet(MainActivity.this)){
                     startButton.setEnabled(false);
                     intent = new Intent(MainActivity.this, MyService.class);
                     intent.putExtra("ticket", gson.toJson(ticket));
                     pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
+                   // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), 60000, pendingIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
                 }
             }
         });

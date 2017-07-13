@@ -57,12 +57,10 @@ public class Search_ticket {
 
                         try {
                             jsonStr = new String(response.getBytes(), "UTF-8");
-                            ticket.setJsonObj(jsonStr, "trainList");
+                            Log.d("str", jsonStr);
                         } catch (UnsupportedEncodingException e) {
                             ticket.error = true;
                             ticket.status = "Кодування не підтримується";
-                            e.printStackTrace();
-                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

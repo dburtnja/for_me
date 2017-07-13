@@ -27,8 +27,6 @@ import java.util.Map;
  */
 
 public class Ticket {
-    private MainActivity    mainActivity;
-    private RequestQueue    queue;
     private Station         stationFrom;
     private Station         stationTill;
     public TicketDate       dateFromStart;
@@ -40,25 +38,17 @@ public class Ticket {
     private boolean         haveTicket;
     public String           status;
     public boolean          error;
-    private JSONObject      trainList;
 
-    public Ticket(MainActivity context, Train train) {
-        this.mainActivity = context;
-        this.queue = Volley.newRequestQueue(context);
+    public Ticket(Train train) {
         this.train = train;
         this.haveTicket = false;
-    }
-
-    public void setJsonObj(String jsonStr, String name) throws JSONException {
-        if (name == "trainList")
-            trainList = new JSONObject(jsonStr);
     }
 
     public boolean isHaveTicket() {
         return haveTicket;
     }
 
-    public boolean setName(int firstName, int lastName){
+    public boolean setName(int firstName, int lastName, MainActivity mainActivity){
         this.firstName = ((TextView) mainActivity.findViewById(firstName)).getText().toString();
         this.lastName = ((TextView) mainActivity.findViewById(lastName)).getText().toString();
         if (this.firstName == null || this.lastName == null){
@@ -80,11 +70,11 @@ public class Ticket {
         return stationTill;
     }
 
-    public void setStationFrom(EditText stationName) {
+    public void setStationFrom(EditText stationName, RequestQueue queue, MainActivity mainActivity){
         this.stationFrom = new Station(stationName, queue, mainActivity);
     }
 
-    public void setStationTill(EditText stationName) {
+    public void setStationTill(EditText stationName, RequestQueue queue, MainActivity mainActivity){
         this.stationTill = new Station(stationName, queue, mainActivity);
     }
 
@@ -98,7 +88,7 @@ public class Ticket {
         sTill.setText(stationTill != null ? stationTill.getTitle() : "");
     }
 
-    public boolean checkIfAllSet(){
+    public boolean checkIfAllSet(MainActivity mainActivity){
         if (stationFrom == null)
             return mainActivity.toast("Відсутня станція відправлення", true);
         else if (stationTill == null)
@@ -111,7 +101,7 @@ public class Ticket {
             return false;
         else if (firstName == null || firstName.equals(""))
             return mainActivity.toast("Відсутнє ім'я", true);
-        else if (lastName == null || firstName.equals(""))
+        else if (lastName == null || lastName.equals(""))
             return mainActivity.toast("Відсутнє прізвище", true);
         return true;
     }
