@@ -61,7 +61,7 @@ public class Post {
             return str;
         } catch (Exception e) {
             e.printStackTrace();
-            ticket.status = "Помилка методу POST за посиланням: " + url;
+            ticket.status = url;
             return null;
         }
     }

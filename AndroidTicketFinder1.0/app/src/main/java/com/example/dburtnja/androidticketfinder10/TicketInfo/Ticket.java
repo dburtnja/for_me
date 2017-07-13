@@ -31,21 +31,32 @@ public class Ticket {
     private Station         stationTill;
     public TicketDate       dateFromStart;
     public TicketDate       dateFromEnd;
+    public TicketDate       bufDateFromStart;
     private Train           train;
     private String          firstName;
     private String          lastName;
     public String           cookie;
     private boolean         haveTicket;
-    public String           status;
-    public boolean          error;
+    private String          status;
+    private boolean         error;
 
     public Ticket(Train train) {
         this.train = train;
         this.haveTicket = false;
     }
 
+    public void setError(String status){
+        error = true;
+        this.status = status;
+    }
+
     public boolean isHaveTicket() {
         return haveTicket;
+    }
+
+    public void setSimpleFormats(){
+        dateFromStart.setSimpleFormat();
+        dateFromEnd.setSimpleFormat();
     }
 
     public boolean setName(int firstName, int lastName, MainActivity mainActivity){
@@ -110,10 +121,15 @@ public class Ticket {
         Map<String, String> params;
 
         params = new HashMap<>();
-        params.put("date", dateFromStart.getStrDate());
-        params.put("from", stationFrom.getValue() + "");
-        params.put("time", dateFromStart.getStrTime());
-        params.put("to", stationTill.getValue() + "");
+        params.put("station_id_from", stationFrom.getValue() + "");
+        params.put("station_id_till", stationTill.getValue() + "");
+        params.put("station_from", stationFrom.getTitle());
+        params.put("station_till", stationTill.getTitle());
+        params.put("date_dep", dateFromStart.getStrDate());
+        params.put("time_dep", dateFromStart.getStrTime());
+        params.put("time_dep_till", "");
+        params.put("another_ec", "0");
+        params.put("search", "");
         return (params);
     }
 

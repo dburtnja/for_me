@@ -42,12 +42,6 @@ public class Main2Activity extends AppCompatActivity {
         String  url;
 
         url = "s";
-      /*  url = "http://booking.uz.gov.ua/?" +
-                "date=" + ticket.dateFromStart.getStrDate() +
-                "&from=" + ticket.getStationFrom().getValue() +
-                "&time=" + ticket.dateFromStart + //might need : parse
-                "&to=" + ticket.getStationTill().getValue() +
-                "&url=train-list";*/
         return (url);
     }
 

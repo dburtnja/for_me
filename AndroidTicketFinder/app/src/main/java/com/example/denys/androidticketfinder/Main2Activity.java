@@ -1,5 +1,7 @@
 package com.example.denys.androidticketfinder;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.example.denys.androidticketfinder.Search.Search;
@@ -20,24 +23,30 @@ import java.util.Map;
 
 public class Main2Activity extends AppCompatActivity {
 
+    private WebView         webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        ClipboardManager clipboardManager;
+        ClipData clipData;
+        CookieManager       cookieManager;
+        String              url;
+        String              cookie;
 
-        Bundle extras = getIntent().getExtras();
-        String str = extras.getString("_gv_sessid");
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        MediaPlayer player = MediaPlayer.create(Main2Activity.this, notification);
-        player.setLooping(true);
-        player.start();
-        if (str != null) {
-            Log.d("cookie", str);
-            WebView webview = (WebView) this.findViewById(R.id.webView);
-            CookieManager.getInstance().setAcceptThirdPartyCookies(webview, true);
-            CookieManager.getInstance().setCookie("http://booking.uz.gov.ua/", "_gv_sessid=" + str);
-            webview.loadUrl("http://booking.uz.gov.ua/mobile/cart/");
-        }
+        cookie = savedInstanceState.getString("cookie");
+        clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipData = ClipData.newPlainText("cookie", cookie);
+        clipboardManager.setPrimaryClip(clipData);
+        url = "https://booking.uz.gov.ua/mobile/cart/";
+        cookieManager = CookieManager.getInstance();
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie("https://booking.uz.gov.ua/", cookie);
+        webView.loadUrl(url);
     }
 }

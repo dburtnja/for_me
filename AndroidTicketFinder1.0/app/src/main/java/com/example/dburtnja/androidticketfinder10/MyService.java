@@ -15,7 +15,6 @@ public class MyService extends Service {
 
     public MyService() {
         gson = new Gson();
-        Log.d("myService", "gson");
     }
 
     @Override
@@ -24,10 +23,12 @@ public class MyService extends Service {
         Search_ticket   search_ticket;
 
         ticket = gson.fromJson(intent.getStringExtra("ticket"), Ticket.class);
+        ticket.setSimpleFormats();
         search_ticket = new Search_ticket(ticket, this);
         search_ticket.findTicket();
 
-        ticket.error = false;
+
+       // ticket.error = false;
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -289,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("time", SystemClock.elapsedRealtime() + "");
                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, 60000 * ticket.seekBarVal, pendingIntent);
 
+
+
                 } else {
                     statusView.setText("Помилка пошуку! Пошук не розпочато!!!");
                 }

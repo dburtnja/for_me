@@ -95,11 +95,10 @@ public class Search{
                 MediaPlayer player = MediaPlayer.create(context, notification);
                 player.setLooping(true);
                 player.start();
-               /* Search.this.timer.cancel();
-                Intent intent1 = new Intent(Search.this, Main2Activity.class);
-                intent1.putExtra("_gv_sessid", ticket.cookie);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent1);*/
+//                Intent intent1 = new Intent(Search.this, Main2Activity.class);
+//                intent1.putExtra("_gv_sessid", ticket.cookie);
+//                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent1);
             }
             else
                 onCheckNotification();

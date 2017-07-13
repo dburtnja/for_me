@@ -68,7 +68,7 @@ public class TicketDate {
         sDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault());
         sTimeFromat = new SimpleDateFormat("Час: HH:mm", Locale.getDefault());
         sFormat = new SimpleDateFormat("Дата: dd.MM.yyyy-Час: HH:mm", Locale.getDefault());
-        sDateTicketFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        sDateTicketFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         sTimeTicketFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     }
 
