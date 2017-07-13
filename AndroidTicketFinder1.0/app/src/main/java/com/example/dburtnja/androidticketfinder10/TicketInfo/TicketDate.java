@@ -64,6 +64,11 @@ public class TicketDate {
         }
     }
 
+    public TicketDate(long date){
+        setSimpleFormat();
+        this.date = date;
+    }
+
     public void setSimpleFormat(){
         sDateFormat = new SimpleDateFormat("Дата: dd.MM.yyyy", Locale.getDefault());
         sTimeFromat = new SimpleDateFormat("Час: HH:mm", Locale.getDefault());

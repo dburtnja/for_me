@@ -125,8 +125,8 @@ public class Ticket {
         params.put("station_id_till", stationTill.getValue() + "");
         params.put("station_from", stationFrom.getTitle());
         params.put("station_till", stationTill.getTitle());
-        params.put("date_dep", dateFromStart.getStrDate());
-        params.put("time_dep", dateFromStart.getStrTime());
+        params.put("date_dep", bufDateFromStart.getStrDate());
+        params.put("time_dep", bufDateFromStart.getStrTime());
         params.put("time_dep_till", "");
         params.put("another_ec", "0");
         params.put("search", "");

@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.dburtnja.androidticketfinder10.TicketInfo.Ticket;
+import com.example.dburtnja.androidticketfinder10.TicketInfo.TicketDate;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -38,11 +39,11 @@ public class Search_ticket {
     }
 
     public void checkForTrain(){
-        long    nextDay;
-
-        nextDay = ticket.dateFromStart.getDate();
-        while (nextDay < ticket.dateFromEnd.getDate()){
-
+        ticket.bufDateFromStart = new TicketDate(ticket.dateFromStart.getDate());
+        while (ticket.bufDateFromStart.getDate() < ticket.dateFromEnd.getDate()){
+            findTicket();
+            Log.d("test", ticket.bufDateFromStart.getStrDate() + " " + ticket.bufDateFromStart.getStrTime());
+            ticket.bufDateFromStart = new TicketDate(ticket.bufDateFromStart.getNextDayTime());
         }
     }
 
@@ -87,10 +88,6 @@ public class Search_ticket {
     }
 
     private void findPlace(JSONObject trainList){
-        try {
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            Log.d("test", ticket.bufDateFromStart.getStrDate() + " " + ticket.bufDateFromStart.getStrTime());
     }
 }

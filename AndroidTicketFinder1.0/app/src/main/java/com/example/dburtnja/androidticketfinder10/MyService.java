@@ -25,7 +25,7 @@ public class MyService extends Service {
         ticket = gson.fromJson(intent.getStringExtra("ticket"), Ticket.class);
         ticket.setSimpleFormats();
         search_ticket = new Search_ticket(ticket, this);
-        search_ticket.findTicket();
+        search_ticket.checkForTrain();
 
 
        // ticket.error = false;
