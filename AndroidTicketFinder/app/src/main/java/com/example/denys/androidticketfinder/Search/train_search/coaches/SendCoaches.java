@@ -16,7 +16,7 @@ public class SendCoaches {
     private void selectCoach(Ticket ticket) {
         ticket.coach_num = ticket.coaches.getCoaches().get(0).getNum();
         ticket.coach_class = ticket.coaches.getCoaches().get(0).getCoachClass();
-        ticket.coach_type_id = ticket.coaches.getCoaches().get(0).getCoachTypeId();
+        ticket.coach_type_id = ticket.coaches.getCoaches().get(0).getType();
     }
 
     private void findPlace(Ticket ticket) {
@@ -59,11 +59,16 @@ public class SendCoaches {
             coachParam = "station_id_from=" + ticket.fromStation.value +
                     "&station_id_till=" + ticket.tillStation.value +
                     "&train=" + URLEncoder.encode(ticket.train_nbr, "UTF-8") +
+                    "&model=0" +
                     "&coach_num=" + ticket.coach_num +
+                    "&coach_type=" + URLEncoder.encode(ticket.coach_type_id, "UTF-8") +
                     "&coach_class=" + URLEncoder.encode(ticket.coach_class, "UTF-8") +
-                    "&coach_type_id=" + ticket.coach_type_id +
                     "&date_dep=" + (int)(ticket.tillDate / 1000) +
-                    "&scheme_id=0";
+                    "&cached_scheme[0]=%D0%9A22";
+
+
+//station_id_from=2218300&station_id_till=2200001&train=748%D0%A8&model=4&coach_num=1&coach_type=%D0%A1&coach_class=1&date_dep=1502201220
+//station_id_from=2218300&station_id_till=2200001&train=748%D0%A8&model=0&coach_num=1&coach_type=%D0%A11&coach_class=1&date_dep=1502225940&cached_scheme[0]=%D0%9A22
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return false;

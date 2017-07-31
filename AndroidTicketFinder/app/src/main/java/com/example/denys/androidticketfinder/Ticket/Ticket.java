@@ -26,7 +26,7 @@ public class Ticket {
     public String cookie;
     public String train_nbr;
     public String coach_type;
-    public int coach_type_id;
+    public String coach_type_id;
     public int coach_num;
     public String coach_class;
     public Coach coach;
